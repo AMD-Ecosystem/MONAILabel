@@ -13,7 +13,10 @@
 # please run `./runtests.sh --clean && DOCKER_BUILDKIT=1 docker build -t projectmonai/monailabel:latest .`
 # to use different version of MONAI pass `--build-arg FINAL_IMAGE=...`
 
-#ARG FINAL_IMAGE=pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
+# NVIDIA CUDA base: pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
+# AMD ROCm base (build with --build-arg FINAL_IMAGE=...): rocm/dev-ubuntu-24.04:7.2-complete
+# (then install torch from the ROCm wheel index, e.g.
+#  pip install torch --index-url https://download.pytorch.org/whl/rocm7.1)
 ARG FINAL_IMAGE=ubuntu:22.04
 ARG BUILD_IMAGE=python:3.10
 ARG NODE_IMAGE=node:slim
