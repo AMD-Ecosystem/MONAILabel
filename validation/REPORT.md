@@ -127,7 +127,52 @@ This model is representative of the 3D segmentation backbone used in MONAILabel'
 
 ---
 
-## 5. Validation Matrix
+## 5. Workload Validation — Full Server + Real CT Inference
+
+**Environment:** Conductor MI350X (gfx950), Docker `rocm/pytorch:rocm7.2.2_ubuntu24.04_py3.12_pytorch_release_2.10.0`
+
+**Test setup:**
+- MONAILabel server: `radiology` sample app, `segmentation_spleen` model, `use_pretrained_model=false`
+- Pre-trained weights: `model_spleen_ct_segmentation_v1.pt` (19 MB UNet checkpoint, from MONAI model zoo)
+- Input: real spleen CT scan `spleen_1.nii.gz` (9.5 MB, 512×512×34, from `/scratch/users/rocm-ls/demo/data/`)
+- Inference: sliding-window (`roi_size=[160,160,160]`, overlap 0.25, `SlidingWindowInferer`) via `POST /infer/segmentation_spleen`
+
+**Results:**
+
+| Step | Result | Detail |
+|------|--------|--------|
+| Server startup | **PASS** | Ready after 28s; GPU preloaded with `device: cuda` |
+| `/infer` HTTP status | **PASS** | HTTP 200 |
+| Inference wall time | **59s** | Pre 1.4s + Inferer 54.9s + Post 0.9s + Write 1.6s |
+| Output shape | `(512, 512, 34)` | Matches input spatial dimensions |
+| Unique labels | `{0, 1}` | Background + spleen |
+| Foreground voxels | **4,552** | Non-zero spleen segmentation present |
+| Device in server log | `device: cuda` | GPU inference confirmed |
+
+**Key log lines confirming GPU execution:**
+```
+Infer Request (final): {'device': 'cuda', 'model': 'segmentation_spleen', ...}
+Inferer:: cuda => SlidingWindowInferer => {'roi_size': [160, 160, 160], 'overlap': 0.25, ...}
+++ Latencies => Total: 58.7247; Pre: 1.3935; Inferer: 54.8508; ...
+```
+
+### hipCIM Integration in Workload
+
+During the workload run, `amd-hipcim` (cucim 25.10.00) was installed and verified:
+
+| Check | Result |
+|-------|--------|
+| `import cucim` | **PASS** — cucim 25.10.00 importable |
+| `has_cucim` | `True` |
+| `has_cupy` | `False` (cupy not in Docker image) |
+| `largest_cc` (GPU CC post-processing) | `False` → CPU fallback via `KeepLargestConnectedComponentd` |
+| `KeepLargestConnectedComponentd` timing | 0.81s (CPU; expected without cupy) |
+
+**Note:** cucim GPU image I/O operations are available independently of cupy. The `largest_cc=True` GPU path (GPU connected-component via cucim+cupy) requires cupy, which is absent from the base PyTorch Docker image. Installing cupy would activate the GPU CC path and reduce the post-processing time. This is not a regression — the fallback is intentional and documented in `segmentation.py:109`.
+
+---
+
+## 6. Validation Matrix
 
 | Tier | linux-gfx942 (Alola MI300X) | linux-gfx950 (Alola MI355X) | linux-gfx950 (Conductor MI350X) |
 |------|:---:|:---:|:---:|
@@ -137,13 +182,13 @@ This model is representative of the 3D segmentation backbone used in MONAILabel'
 | unit | PASS (57/57) | PASS (57/57) | PASS* (53/57) |
 | parity (AMD deliverables) | PASS | PASS | PASS |
 | perf (GPU vs CPU) | pending | pending | **26.59x** |
-| workload | pending | pending | pending |
+| workload | pending | pending | **PASS** (59s, HTTP 200, 4,552 spleen voxels) |
 
 \* 4 pre-existing upstream failures (girder_client/Python 3.12 compat + numpymaxflow env); zero AMD-port-specific failures.
 
 ---
 
-## 6. Gap Analysis
+## 7. Gap Analysis
 
 ### What works
 
@@ -152,25 +197,25 @@ This model is representative of the 3D segmentation backbone used in MONAILabel'
 - **`/gpu` endpoint**: backend-agnostic dispatch confirmed in source
 - **Unit tests**: 53/57 on Conductor; 57/57 on Alola (same env as port validation)
 - **GPU inference**: **26.59x** speedup vs CPU on MI350X for 3D BasicUNet (96^3 patch)
+- **Full server workload**: end-to-end `/infer` on real spleen CT — HTTP 200, 59s, valid mask
 - **Numerical parity**: CPU == GPU within 4e-6 max error (float32 rounding only)
 
 ### What was not validated in this run
 
-- **Full MONAILabel server + sample app workload** (start server, download dataset, call `/infer`): not run due to time constraints. The unit + parity tiers cover the AMD-specific code; workload would confirm end-to-end server lifecycle.
 - **Training** (`torch.distributed`): not tested; expected to work via PyTorch-ROCm transparency.
-- **hipCIM integration** (DICOM pathology slide reading): separate library; hipCIM 26.06.00 has its own ROCm enablement.
+- **Pathology app + WSI** (OpenSlide): deferred — see §8 below.
 - **FP16 inference**: not tested; expected to work; would increase speedup further.
 
 ### What needs to be done before public release
 
 1. **OSRB approval**: AMD modification notices are in place (`0c86017c`). Approval required before pushing to `ROCm-LS/MONAILabel`.
-2. **Workload validation**: run full server + Task09_Spleen infer on MI300X.
-3. **Upstream PR**: raise `instinct-moat-port` -> `main` on `Project-MONAI/MONAILabel` (D1: human action).
-4. **Docker image**: publish `rocm/monailabel:<version>` or equivalent to a public registry.
+2. **Upstream PR**: raise `instinct-moat-port` -> `main` on `Project-MONAI/MONAILabel` (D1: human action).
+3. **Docker image**: publish `rocm/monailabel:<version>` or equivalent to a public registry.
+4. **Pathology app**: deferred future item — requires OpenSlide WSI test data.
 
 ---
 
-## 7. Environment Details (Conductor run)
+## 8. Environment Details (Conductor run)
 
 ```
 Node:         asrock-1w300-f4-2b.mkm.dcgpu (Conductor SUT)
