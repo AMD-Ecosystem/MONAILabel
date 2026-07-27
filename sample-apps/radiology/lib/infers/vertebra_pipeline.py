@@ -135,7 +135,7 @@ class InferVertebraPipeline(BasicInferTask):
 
     def __call__(self, request):
         start = time.time()
-        request.update({"image_path": request.get("image")})
+        request.update({"img_path": request.get("image")})
 
         device = name_to_device(request.get("device", "cuda"))
         request["device"] = device

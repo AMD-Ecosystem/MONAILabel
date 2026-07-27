@@ -178,9 +178,9 @@ def post_callback(data):
     Saves clicks in the same folder where the created labels are stored.
     Can also help debugging by providing a way of saving nifti files.
     """
-    image_name = Path(os.path.basename(data["image_path"]))
+    image_name = Path(os.path.basename(data["img_path"]))
     true_image_name = image_name.name.removesuffix("".join(image_name.suffixes))
-    image_folder = Path(data["image_path"]).parent
+    image_folder = Path(data["img_path"]).parent
 
     labels_folder = os.path.join(image_folder, "labels", "final")
     if not os.path.exists(labels_folder):
@@ -206,8 +206,8 @@ def post_callback(data):
         logger.info(f"inputs.shape is {inputs.shape}")
         logger.info(f"sum of fgg is {torch.sum(inputs[1])}")
         logger.info(f"sum of bgg is {torch.sum(inputs[2])}")
-        logger.info(f"Image path is {data['image_path']}, copying file")
-        shutil.copyfile(data["image_path"], f"{path}/im.nii.gz")
+        logger.info(f"Image path is {data['img_path']}, copying file")
+        shutil.copyfile(data["img_path"], f"{path}/im.nii.gz")
         # save_nifti(f"{path}/im", inputs[0].cpu().detach().numpy())
         save_nifti(f"{path}/guidance_fgg", inputs[1].cpu().detach().numpy())
         save_nifti(f"{path}/guidance_bgg", inputs[2].cpu().detach().numpy())

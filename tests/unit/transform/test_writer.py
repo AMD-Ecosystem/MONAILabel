@@ -28,7 +28,7 @@ WRITER_DATA = [
         "pred_meta_dict": {
             "affine": np.identity(4),
         },
-        "image_path": "fakepath.nii",
+        "img_path": "fakepath.nii",
     },
 ]
 
@@ -51,7 +51,7 @@ POLYGONWRITER_DATA = [
         "pred_meta_dict": {
             "affine": np.identity(4),
         },
-        "image_path": "fakepath.nii",
+        "img_path": "fakepath.nii",
         "output": "asap",
         "result": {
             "annotation": {
@@ -96,7 +96,7 @@ DETECTION_DATA = [
         "pred_meta_dict": {
             "affine": np.identity(4),
         },
-        "image_path": "fakepath.nii",
+        "img_path": "fakepath.nii",
         "box": torch.tensor(
             [
                 [37.5524, -153.9518, -230.8054, 8.1992, 8.1875, 8.2574],
@@ -121,7 +121,7 @@ class TestWriter(unittest.TestCase):
         output_file, data = Writer(**args)(input_data)
         self.assertEqual(os.path.exists(output_file), True)
 
-        file_ext = "".join(pathlib.Path(input_data["image_path"]).suffixes)
+        file_ext = "".join(pathlib.Path(input_data["img_path"]).suffixes)
         self.assertIn(file_ext.lower(), [".nii", ".nii.gz"])
 
     @parameterized.expand([WRITER_DATA])
@@ -157,7 +157,7 @@ class TestWriter(unittest.TestCase):
         output_file, data = Writer(**args)(input_data)
         self.assertEqual(os.path.exists(output_file), True)
 
-        file_ext = "".join(pathlib.Path(input_data["image_path"]).suffixes)
+        file_ext = "".join(pathlib.Path(input_data["img_path"]).suffixes)
         self.assertIn(file_ext.lower(), [".nii", ".nii.gz"])
 
 
@@ -166,7 +166,7 @@ class TestPolygonWriter(unittest.TestCase):
     def test_asap_result(self, args, input_data):
         output_file, data = PolygonWriter(**args)(input_data)
         self.assertEqual(os.path.exists(output_file), True)
-        file_ext = "".join(pathlib.Path(input_data["image_path"]).suffixes)
+        file_ext = "".join(pathlib.Path(input_data["img_path"]).suffixes)
         self.assertIn(file_ext.lower(), [".nii", ".nii.gz"])
         file_ext = "".join(pathlib.Path(output_file).suffixes)
         self.assertIn(file_ext.lower(), [".xml"])
@@ -176,7 +176,7 @@ class TestPolygonWriter(unittest.TestCase):
         input_data.update({"output": "dsa"})
         output_file, data = PolygonWriter(**args)(input_data)
         self.assertEqual(os.path.exists(output_file), True)
-        file_ext = "".join(pathlib.Path(input_data["image_path"]).suffixes)
+        file_ext = "".join(pathlib.Path(input_data["img_path"]).suffixes)
         self.assertIn(file_ext.lower(), [".nii", ".nii.gz"])
         file_ext = "".join(pathlib.Path(output_file).suffixes)
         self.assertIn(file_ext.lower(), [".json"])
@@ -192,7 +192,7 @@ class TestDetectionWriter(unittest.TestCase):
     def test_slicer_result(self, args, input_data):
         output_file, data = DetectionWriter(**args)(input_data)
         self.assertEqual(os.path.exists(output_file), True)
-        file_ext = "".join(pathlib.Path(input_data["image_path"]).suffixes)
+        file_ext = "".join(pathlib.Path(input_data["img_path"]).suffixes)
         self.assertIn(file_ext.lower(), [".nii", ".nii.gz"])
         file_ext = "".join(pathlib.Path(output_file).suffixes)
         self.assertIn(file_ext.lower(), [".json"])

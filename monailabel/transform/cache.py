@@ -48,7 +48,7 @@ class CacheTransformDatad(Transform):
     def __init__(
         self,
         keys: KeysCollection,
-        hash_key: Union[str, Sequence[str]] = ("image_path", "model"),
+        hash_key: Union[str, Sequence[str]] = ("img_path", "model"),
         in_memory: bool = True,
         ttl: int = 600,
         reset_applied_operations_id: bool = True,

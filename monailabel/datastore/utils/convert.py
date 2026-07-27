@@ -64,7 +64,7 @@ def dicom_to_nifti(series_dir, is_seg=False):
             image = file_reader.Execute()
 
         logger.info(f"Image size: {image.GetSize()}")
-        output_file = tempfile.NamedTemporaryFile(suffix=".nii.gz").name
+        output_file = tempfile.NamedTemporaryFile(suffix=".nii.gz", delete=False).name
         SimpleITK.WriteImage(image, output_file)
 
     logger.info(f"dicom_to_nifti latency : {time.time() - start} (sec)")
@@ -83,7 +83,7 @@ def binary_to_image(reference_image, label, dtype=np.uint8, file_ext=".nii.gz"):
     label_np = label_np.reshape(image_np.shape, order="F")
     logger.info(f"Label (reshape): {label_np.shape}")
 
-    output_file = tempfile.NamedTemporaryFile(suffix=file_ext).name
+    output_file = tempfile.NamedTemporaryFile(suffix=file_ext, delete=False).name
     affine = meta_dict.get("affine")
     write_itk(label_np, output_file, affine=affine, dtype=None, compress=True)
 
