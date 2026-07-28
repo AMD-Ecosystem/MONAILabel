@@ -387,7 +387,7 @@ class TestScribblesTransforms(unittest.TestCase):
 class TestScribblesInferers(unittest.TestCase):
     @parameterized.expand(TEST_CASE_HISTOGRAM_GRAPHCUT)
     def test_histogram_graphcut_inferer(self, test_input, expected_shape):
-        test_input.update({"image_path": "fakepath.nii"})
+        test_input.update({"img_path": "fakepath.nii"})
 
         # save data to file and update test dictionary
         image_file, data = Writer(label="image", nibabel=True)(test_input)

@@ -245,10 +245,10 @@ class Sam2InferTask(InferTask):
                 pred[:, :, slice_idx] = masks[0]
 
             data = copy.copy(request)
-            data.update({"image_path": request["image"], "pred": pred, "image": image_tensor})
+            data.update({"img_path": request["image"], "pred": pred, "image": image_tensor})
         else:
             data = copy.copy(request)
-            data.update({"image_path": request["image"], "pred": masks[0], "image": image_tensor})
+            data.update({"img_path": request["image"], "pred": masks[0], "image": image_tensor})
             data = run_transforms(data, self.post_trans, log_prefix="POST", use_compose=False)
 
         if debug:
@@ -345,7 +345,7 @@ class Sam2InferTask(InferTask):
 
         writer = Writer(ref_image="image")
         data = copy.copy(request)
-        data.update({"image_path": request["image"], "pred": pred, "image": image_tensor})
+        data.update({"img_path": request["image"], "pred": pred, "image": image_tensor})
         return writer(data)
 
     def __call__(self, request, debug=False) -> Tuple[Union[str, None], Dict]:

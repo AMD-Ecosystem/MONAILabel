@@ -152,7 +152,7 @@ class BasicInferTask(InferTask):
         return None
 
     @deprecated(since="0.8.0", msg_suffix="This feature is not supported anymore")
-    def add_cache_transform(self, t, data, keys=("image", "image_meta_dict"), hash_key=("image_path", "model")):
+    def add_cache_transform(self, t, data, keys=("image", "image_meta_dict"), hash_key=("img_path", "model")):
         pass
         # if data and data.get("cache_transforms", False):
         #     in_memory = data.get("cache_transforms_in_memory", True)
@@ -279,7 +279,7 @@ class BasicInferTask(InferTask):
         if req.get("image") is not None and isinstance(req.get("image"), str):
             logger.info(f"Infer Request (final): {req}")
             data = copy.deepcopy(req)
-            data.update({"image_path": req.get("image")})
+            data.update({"img_path": req.get("image")})
         else:
             dump_data(req, logger.level)
             data = req

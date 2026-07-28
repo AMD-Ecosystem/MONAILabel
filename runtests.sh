@@ -68,6 +68,7 @@ function print_usage() {
   echo "./runtests.sh --codeformat            # run static checks"
   echo "./runtests.sh --autofix               # run automatic code formatting using \"isort\" and \"black\"."
   echo "./runtests.sh --unittests             # run unit tests with code coverage"
+  
   echo "./runtests.sh --net                   # run integration tests (monailabel PIP package should have been installed)"
   echo "./runtests.sh --clean                 # clean up temporary files and run \"${PY_EXE} setup.py develop --uninstall\"."
   echo ""

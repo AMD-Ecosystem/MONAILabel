@@ -185,7 +185,7 @@ class Writer:
     def __call__(self, data) -> Tuple[Any, Any]:
         logger.setLevel(data.get("logging", "INFO").upper())
 
-        path = data.get("image_path")
+        path = data.get("img_path")
         ext = file_ext(path) if path else None
         dtype = data.get(self.key_dtype, None)
         compress = data.get(self.key_compress, False)
@@ -354,7 +354,7 @@ class DetectionWriter:
             "size": data.get("size"),
             "box": data.get(self.pred_box_key).cpu().detach().tolist(),
             "label": data.get(self.pred_label_key).cpu().detach().tolist(),
-            "image": data.get("image_path", None),
+            "image": data.get("img_path", None),
             "latencies": data.get("latencies"),
         }
 
