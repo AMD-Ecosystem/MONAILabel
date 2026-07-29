@@ -61,6 +61,8 @@ export default class SettingsTable extends Component {
   };
 
   render() {
+    let safeBase = this.state.url || "";
+    try { safeBase = new URL(this.state.url).toString(); } catch (e) { safeBase = String(this.state.url || ""); }
     return (
       <table className="settingsTable">
         <tbody>
@@ -81,14 +83,14 @@ export default class SettingsTable extends Component {
             <td>&nbsp;</td>
             <td>
               <button className="actionButton" onClick={this.onConnect}>
-                <Icons.ByName name="tool-reset" width="12px" height="12px" />
+                <Icons.Refresh className="h-3 w-3" />
               </button>
             </td>
           </tr>
           <tr style={{ fontSize: 'smaller' }}>
             <td colSpan={3}>
               <a
-                href={new URL(this.state.url).toString() + 'info/'}
+                href={safeBase + 'info/'}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -96,7 +98,7 @@ export default class SettingsTable extends Component {
               </a>
               <b>&nbsp;&nbsp;|&nbsp;&nbsp;</b>
               <a
-                href={new URL(this.state.url).toString() + 'logs/?lines=100'}
+                href={safeBase + 'logs/?lines=100'}
                 target="_blank"
                 rel="noopener noreferrer"
               >
