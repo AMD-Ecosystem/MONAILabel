@@ -12,7 +12,8 @@ limitations under the License.
 */
 
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, Button } from '@ohif/ui-next';
+import { Dialog, Button } from '@ohif/ui-next';
+import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@ohif/ui-next/components/Dialog/Dialog';
 import OptionsForm from './actions/OptionsForm';
 
 function OptionsInputDialogComponent({ config, info, callback, hide }) {
@@ -66,7 +67,7 @@ function OptionsInputDialogComponent({ config, info, callback, hide }) {
 function optionsInputDialog(uiDialogService, config, info, callback) {
   const dialogId = 'monai-label-options';
 
-  uiDialogService.show({
+  uiDialogService.create({
     id: dialogId,
     title: 'Options / Configurations',
     content: OptionsInputDialogComponent,

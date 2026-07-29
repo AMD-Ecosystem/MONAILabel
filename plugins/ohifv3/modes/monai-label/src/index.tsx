@@ -61,53 +61,9 @@ function modeFactory({ modeConfiguration }) {
       // Init Default and SR ToolGroups
       initToolGroups(extensionManager, toolGroupService, commandsManager);
 
-      toolbarService.register(toolbarButtons);
-
-      toolbarService.updateSection(toolbarService.sections.primary, [
-        'WindowLevel',
-        'Pan',
-        'Zoom',
-        'TrackballRotate',
-        'Capture',
-        'Layout',
-        'Crosshairs',
-        'MoreTools',
-      ]);
-
-      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.topLeft, [
-        'orientationMenu',
-        'dataOverlayMenu',
-      ]);
-
-      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.topRight, [
-        'modalityLoadBadge',
-        'trackingStatus',
-        'navigationComponent',
-      ]);
-
-      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.bottomLeft, [
-        'windowLevelMenu',
-      ]);
-
-      toolbarService.updateSection('MoreTools', [
-        'Reset',
-        'rotate-right',
-        'flipHorizontal',
-        'ReferenceLines',
-        'ImageOverlayViewer',
-        'StackScroll',
-        'invert',
-        'Probe',
-        'Cine',
-        'Angle',
-        'Magnify',
-        'RectangleROI',
-        'CalibrationLine',
-        'TagBrowser',
-        'AdvancedMagnify',
-        'UltrasoundDirectionalTool',
-        'WindowLevelRegion',
-      ]);
+      // MONAILABEL-FIX: custom toolbarButtons reference evaluate.* fns not
+      // registered in this OHIF (e.g. evaluate.modalityLoadBadge) -> toolbar refresh crash.
+      // Skip custom toolbar; MONAI Label side panel provides the AI actions.
     },
     onModeExit: ({ servicesManager }: withAppTypes) => {
       const {
@@ -119,7 +75,7 @@ function modeFactory({ modeConfiguration }) {
         uiModalService,
       } = servicesManager.services;
 
-      uiDialogService.hideAll();
+      uiDialogService.dismissAll();
       uiModalService.hide();
       toolGroupService.destroy();
       syncGroupService.destroy();
