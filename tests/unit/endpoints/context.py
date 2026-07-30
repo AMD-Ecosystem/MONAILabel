@@ -17,6 +17,9 @@ import unittest
 
 from fastapi.testclient import TestClient
 
+import os as _os
+# MLflow 3.x refuses the file-store tracking backend by default; tests use it.
+_os.environ.setdefault("MLFLOW_ALLOW_FILE_STORE", "true")
 from monailabel.config import settings
 
 

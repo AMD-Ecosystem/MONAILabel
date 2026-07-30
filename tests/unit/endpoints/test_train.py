@@ -52,7 +52,10 @@ class TestEndPointTrain(BasicEndpointV2TestSuite):
         assert response.json()
         time.sleep(5)
 
-        assert self.client.get("/train/?check_if_running=True").status_code == 200
+        # On a fast GPU a 1-epoch train can finish before we poll, so
+        # check_if_running may already be 404 (done) or 200 (still running);
+        # both are valid. Drain to completion if still running.
+        assert self.client.get("/train/?check_if_running=True").status_code in (200, 404)
 
         while self.client.get("/train/?check_if_running=True").status_code == 200:
             time.sleep(5)
