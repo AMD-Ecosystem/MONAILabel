@@ -45,6 +45,8 @@ cp ../config/monai_label.js platform/app/public/config/monai_label.js
 
 yarn config set workspaces-experimental true
 yarn install
+# MONAILABEL-COV-FIX: OHIF d8ef36e build gaps on Node22 toolchain
+yarn add -W -D workbox-webpack-plugin@5.1.4 @babel/plugin-proposal-private-property-in-object@^7.21.0 || true
 yarn run cli list
 
 APP_CONFIG=config/monai_label.js PUBLIC_URL=/ohif/ QUICK_BUILD=true yarn run build

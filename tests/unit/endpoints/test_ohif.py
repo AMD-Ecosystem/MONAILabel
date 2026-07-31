@@ -9,15 +9,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import unittest
 
+import monailabel
 from .context import BasicEndpointTestSuite
 
 
 class TestEndPointLogs(BasicEndpointTestSuite):
     def test_ohif(self):
         response = self.client.get("/ohif/")
-        assert response.status_code == 404
+        # When the OHIF plugin is built (BUILD_OHIF=true) the static viewer is
+        # bundled and served (200); otherwise the endpoint returns 404.
+        ohif_index = os.path.join(
+            os.path.dirname(monailabel.__file__), "endpoints", "static", "ohif", "index.html"
+        )
+        if os.path.exists(ohif_index):
+            assert response.status_code == 200
+        else:
+            assert response.status_code == 404
 
 
 if __name__ == "__main__":
