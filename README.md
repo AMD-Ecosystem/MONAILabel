@@ -162,7 +162,7 @@ In addition, you can find a table of the basic supported fields, modalities, vie
 
 # Getting Started with MONAI Label
 ### MONAI Label requires a few steps to get started:
-- Step 1: [Install MONAI Label](#step-1-installation)
+- Step 1: [Install MONAI Label](#step-1-installation) (see [Prerequisite](#prerequisite-install-amd-monai))
 - Step 2: [Download a MONAI Label sample app or write your own custom app](#step-2-monai-label-sample-applications)
 - Step 3: [Prepare your Data](#step-3-data-preparation)
 - Step 4: [Launch MONAI Label Server and start Annotating!](#step-4-start-monai-label-server-and-start-annotating)
@@ -170,6 +170,11 @@ In addition, you can find a table of the basic supported fields, modalities, vie
 ## Step 1 Installation
 
 ### ROCm (AMD GPU) Build
+
+**Prerequisite: Install amd-monai**
+
+Before installing MONAILabel, install `amd-monai` (MONAI's AMD ROCm build) by following the instructions at:
+[https://rocm.docs.amd.com/projects/monai/en/latest/install/installation.html](https://rocm.docs.amd.com/projects/monai/en/latest/install/installation.html)
 
 **1. Clone the repository**
 
