@@ -31,14 +31,11 @@ ARG AMDGPU_TARGETS=gfx942
 # Phase1: Build OHIF Viewer
 FROM ${NODE_IMAGE} AS ohifbuild
 COPY plugins/ohifv3 /opt/ohifv3
-# node:slim ships only npm (no git/curl/yarn). Install git/curl and yarn (classic)
-# up front so the viewer's requirements.sh finds yarn already present and skips
-# its (broken) apt-based yarn install.
+
 RUN apt update -y && apt install -y --no-install-recommends git curl ca-certificates && \
     npm install -g yarn
 RUN cd /opt/ohifv3 && ./build.sh /opt/ohifv3/release
-# Fail early if the viewer build produced no output (otherwise the COPY below
-# fails much later with a confusing "file does not exist").
+
 RUN test -d /opt/ohifv3/release && [ -n "$(ls -A /opt/ohifv3/release)" ] || \
     { echo "ERROR: OHIF build produced no /opt/ohifv3/release output"; exit 1; }
 
@@ -82,9 +79,7 @@ COPY requirements.txt /opt/monailabel/requirements.txt
 COPY amd-constraints.txt /opt/monailabel/amd-constraints.txt
 
 RUN apt update -y && apt install -y git curl openslide-tools python3 python-is-python3 python3-pip python3-setuptools python3-wheel
-# Do NOT `pip install --upgrade pip`/wheel here: the base image ships them via
-# Debian (no RECORD file), so uninstalling to upgrade fails. The distro pip/wheel
-# are fine as-is; only ensure setuptools is >=61 (installs alongside, no removal).
+
 RUN python -m pip install --no-cache-dir --upgrade "setuptools>=61"
 
 # torch from the ROCm wheel index 
@@ -96,17 +91,9 @@ RUN ROCM_VERSION="$(cat /opt/rocm/.info/version)" && \
     python -m pip install --no-cache-dir amd-hipcim --extra-index-url="${AMD_INDEX}/" && \
     python -m pip install --no-cache-dir amd-monai --extra-index-url="${AMD_INDEX}"
 
-# girder-client==3.2.3 ships only an sdist; under build isolation its build pulls
-# setuptools_scm 10.x, which needs a `vcs_versioning` module that isn't available
-# and fails metadata generation. Pre-install compatible build tooling and build
-# girder-client with --no-build-isolation so it uses them.
 RUN python -m pip install --no-cache-dir "setuptools-scm<8" "setuptools>=61" wheel && \
     python -m pip install --no-cache-dir --no-build-isolation girder-client==3.2.3
 
-# SAM-2 (a git dependency) hangs under pip build-isolation because its isolated
-# build env re-downloads torch from PyPI; torch is already installed above, so
-# install everything else first, then SAM-2 with --no-build-isolation. girder-client
-# is already installed above, so drop it from the bulk install too.
 RUN SAM2_URL="$(grep -iE 'sam2\.git' requirements.txt | sed -E 's/^[^@]*@ *//; s/ *;.*$//' | head -1)" && \
     grep -ivE 'sam2\.git|^girder-client' requirements.txt > /tmp/req_nosam.txt && \
     python -m pip install --no-cache-dir -r /tmp/req_nosam.txt -c amd-constraints.txt && \
