@@ -16,8 +16,7 @@
 # to use different version of MONAI pass `--build-arg FINAL_IMAGE=...`
 #
 # AMD ROCm build (default): torch comes from the ROCm wheel index and MONAI is
-# provided by amd-monai (with amd-hipcim) from the AMD ROCm pip index. NVIDIA/CUDA
-# wheels are blocked via amd-constraints.txt. Override the ROCm base / indices
+# provided by amd-monai (with amd-hipcim) from the AMD ROCm pip index. Override the ROCm base / indices
 # with the build-args below, e.g.:
 #   DOCKER_BUILDKIT=1 docker build \
 #     --build-arg FINAL_IMAGE=rocm/dev-ubuntu-24.04:7.2-complete \
@@ -48,10 +47,7 @@ FROM ${BUILD_IMAGE} AS build
 ARG TORCH_INDEX_URL
 WORKDIR /opt/monailabel
 RUN python -m pip install pip setuptools wheel twine
-# setup.cfg lists `setup_requires = torch ninja`; without torch already present,
-# setup.py fetches build-eggs from PyPI and pulls the CUDA torch (nvidia-* wheels),
-# which conflicts and fails the build. Pre-install torch from the ROCm index so
-# the setup requirement is already satisfied and no CUDA wheels are fetched.
+
 RUN python -m pip install --no-cache-dir ninja && \
     python -m pip install --no-cache-dir torch --index-url ${TORCH_INDEX_URL}
 ADD . /opt/monailabel/
@@ -91,7 +87,7 @@ RUN apt update -y && apt install -y git curl openslide-tools python3 python-is-p
 # are fine as-is; only ensure setuptools is >=61 (installs alongside, no removal).
 RUN python -m pip install --no-cache-dir --upgrade "setuptools>=61"
 
-# torch from the ROCm wheel index (NOT the default CUDA build)
+# torch from the ROCm wheel index 
 RUN python -m pip install --no-cache-dir torch torchvision torchaudio --index-url ${TORCH_INDEX_URL}
 
 # amd-hipcim + amd-monai (MONAI's ROCm build) from the AMD ROCm pip index
@@ -107,7 +103,6 @@ RUN ROCM_VERSION="$(cat /opt/rocm/.info/version)" && \
 RUN python -m pip install --no-cache-dir "setuptools-scm<8" "setuptools>=61" wheel && \
     python -m pip install --no-cache-dir --no-build-isolation girder-client==3.2.3
 
-# MONAILabel requirements with NVIDIA/CUDA wheels blocked via amd-constraints.txt.
 # SAM-2 (a git dependency) hangs under pip build-isolation because its isolated
 # build env re-downloads torch from PyPI; torch is already installed above, so
 # install everything else first, then SAM-2 with --no-build-isolation. girder-client
