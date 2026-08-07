@@ -34,6 +34,7 @@ This fork adds **AMD ROCm** support, replacing CUDA-specific dependencies (e.g.,
   - [Step 2. MONAI Label Sample Applications](#step-2-monai-label-sample-applications)
   - [Step 3. Data Preparation](#step-3-data-preparation)
   - [Step 4. Start MONAI Label Server and Start Annotating!](#step-4-start-monai-label-server-and-start-annotating)
+- [OHIF Web Viewer (AMD ROCm)](#ohif-web-viewer-amd-rocm)
 - [MONAI Label Tutorials](#monai-label-tutorials)
 - [Cite MONAI Label](#cite)
 - [Contributing](#contributing)
@@ -162,7 +163,7 @@ In addition, you can find a table of the basic supported fields, modalities, vie
 
 # Getting Started with MONAI Label
 ### MONAI Label requires a few steps to get started:
-- Step 1: [Install MONAI Label](#step-1-installation)
+- Step 1: [Install MONAI Label](#step-1-installation) (see [Prerequisite](#prerequisite-install-amd-monai))
 - Step 2: [Download a MONAI Label sample app or write your own custom app](#step-2-monai-label-sample-applications)
 - Step 3: [Prepare your Data](#step-3-data-preparation)
 - Step 4: [Launch MONAI Label Server and start Annotating!](#step-4-start-monai-label-server-and-start-annotating)
@@ -170,6 +171,11 @@ In addition, you can find a table of the basic supported fields, modalities, vie
 ## Step 1 Installation
 
 ### ROCm (AMD GPU) Build
+
+**Prerequisite: Install amd-monai**
+
+Before installing MONAILabel, install `amd-monai` (MONAI's AMD ROCm build) by following the instructions at:
+[https://rocm.docs.amd.com/projects/monai/en/latest/install/installation.html](https://rocm.docs.amd.com/projects/monai/en/latest/install/installation.html)
 
 **1. Clone the repository**
 
@@ -273,7 +279,101 @@ monailabel apps --download --name radiology --output apps
 monailabel datasets --download --name Task09_Spleen --output datasets
 monailabel start_server --app apps/radiology --studies datasets/Task09_Spleen/imagesTr --conf models segmentation
 ```
+## OHIF Web Viewer (AMD ROCm)
 
+The OHIF Viewer is built into the AMD ROCm Docker image (`BUILD_OHIF=true`) and is
+served directly by the MONAI Label server at the `/ohif/` path. OHIF reads studies
+from a DICOMweb data source, so the flow is: run an Orthanc DICOMweb server, load
+DICOM studies into it, then start the MONAI Label server pointed at Orthanc.
+
+The steps below were validated end-to-end on an AMD MI300X node using the
+`amd-monailabel:latest` image built from the [Dockerfile](Dockerfile).
+
+### 1. Start Orthanc (DICOMweb data source)
+
+```bash
+cat > orthanc.json <<'JSON'
+{
+  "Name": "orthanc-ml",
+  "Plugins": [ "/usr/local/share/orthanc/plugins/" ],
+  "DicomWeb": { "Enable": true, "Root": "/dicom-web/" },
+  "RemoteAccessAllowed": true,
+  "AuthenticationEnabled": false
+}
+JSON
+
+docker run -d --name orthanc-ml --network host \
+  -v "$PWD/orthanc.json:/etc/orthanc/orthanc.json:ro" \
+  jodogne/orthanc-plugins
+
+# DICOMweb should now answer on http://127.0.0.1:8042/dicom-web/studies
+```
+
+> The `Plugins` path is required — mounting your own `orthanc.json` overrides the
+> image default, so the DICOMweb plugin will not load unless you point at the
+> plugins directory explicitly.
+
+### 2. Load DICOM studies into Orthanc
+
+If your data is NIfTI (e.g. `Task09_Spleen`), convert a few volumes to DICOM
+series first (any converter using `pydicom.generate_uid()` for valid UIDs — plain
+`1.2.826...` string UIDs are rejected by pydicom at inference time), then upload:
+
+```bash
+# upload every .dcm under ./spleen_dicom to Orthanc
+find ./spleen_dicom -name '*.dcm' -exec \
+  curl -s -o /dev/null -X POST http://127.0.0.1:8042/instances \
+       --data-binary @{} -H "Content-Type: application/dicom" \;
+
+# verify studies are visible over DICOMweb
+curl -s http://127.0.0.1:8042/dicom-web/studies | head
+```
+
+### 3. Start the MONAI Label server (serves OHIF)
+
+Run the server from the ROCm image with the GPU attached and `--studies` pointing
+at Orthanc's DICOMweb endpoint:
+
+```bash
+docker run -d --name ml_server --network host \
+  --device=/dev/kfd --device=/dev/dri --group-add video \
+  --ipc=host --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --shm-size=8G \
+  amd-monailabel:latest bash -lc '
+    cp -r /usr/local/monailabel/sample-apps/radiology /workspace/radiology
+    HIP_VISIBLE_DEVICES=0 PYTORCH_HIP_ALLOC_CONF=expandable_segments:True \
+    MLFLOW_ALLOW_FILE_STORE=true \
+    monailabel start_server \
+      --app /workspace/radiology \
+      --studies http://127.0.0.1:8042/dicom-web \
+      --conf models all \
+      --host 0.0.0.0 --port 8000'
+```
+
+`--conf models all` exposes every radiology model (segmentation, deepedit,
+deepgrow_2d/3d, sw_fastedit, sam_2d/3d, spine localization/segmentation
+pipelines, and the GraphCut scribbles post-processors). Use
+`--conf models segmentation` for a lighter startup.
+
+### 4. Open the viewer
+
+```bash
+# from your laptop, tunnel to the node:
+ssh -L 8000:127.0.0.1:8000 -J <login-host> <user>@<gpu-node>
+```
+
+Then browse to **http://localhost:8000/ohif/** (not `/`, which serves the Swagger
+API docs). Use an **incognito window** — OHIF's service worker caches the old
+bundle, so a normal refresh is often not enough. The AI models appear in the
+right-hand **MONAI Label** panel.
+
+### Known limitation (this release)
+
+Manual **annotation is not available** in this build: the manual-markup toolbar
+(Brush / Eraser / ROI / Length / Arrow) is disabled, and triggering annotation
+can blank the viewer. This is a front-end OHIF-plugin version-drift issue (the
+`monai-label` extension targets a newer OHIF than the pinned build); the MONAI
+Label server itself is unaffected. Auto-segmentation and the model actions in the
+MONAI Label side panel work as expected.
 
 ## Cite
 

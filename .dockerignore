@@ -33,3 +33,6 @@ sample-apps/*/train
 sample-apps/*/model
 docs/build
 docs/source/apidocs
+
+# build output (avoid stale wheels polluting context)
+dist/
