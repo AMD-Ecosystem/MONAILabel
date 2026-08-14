@@ -12,7 +12,7 @@
 # Modifications Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
 
 # To build with a different base image
-# please run `./runtests.sh --clean && DOCKER_BUILDKIT=1 docker build -t projectmonai/monailabel:latest .`
+# please run `./runtests.sh --clean && DOCKER_BUILDKIT=1 docker build -t amd-monailabel:latest .`
 # to use different version of MONAI pass `--build-arg FINAL_IMAGE=...`
 #
 # AMD ROCm build (default): torch comes from the ROCm wheel index and MONAI is
@@ -54,9 +54,9 @@ COPY --from=ohifbuild /opt/ohifv3/release /opt/monailabel/monailabel/endpoints/s
 # then rename the wheel to a clean, stable name: monailabel-<version>-py3.whl.
 RUN BUILD_OHIF=false python setup.py bdist_wheel && \
     cd dist && \
-    orig="$(ls monailabel-*.whl | head -1)" && \
-    ver="$(echo "${orig}" | sed -E 's/^monailabel-([^+-]+).*/\1/')" && \
-    mv "${orig}" "monailabel-${ver}-py3-none-any.whl" && \
+    orig="$(ls amd-monailabel-*.whl | head -1)" && \
+    ver="$(echo "${orig}" | sed -E 's/^amd-monailabel-([^+-]+).*/\1/')" && \
+    mv "${orig}" "amd-monailabel-${ver}-py3-none-any.whl" && \
     ls -l
 
 # Phase3: Build Final Docker (AMD ROCm)
@@ -103,5 +103,5 @@ RUN SAM2_URL="$(grep -iE 'sam2\.git' requirements.txt | sed -E 's/^[^@]*@ *//; s
     fi
 
 # Install the MONAILabel wheel (deps already satisfied above)
-COPY --from=build /opt/monailabel/dist/monailabel* /opt/monailabel/dist/
-RUN python -m pip install -v --no-cache-dir --no-deps /opt/monailabel/dist/monailabel*.whl
+COPY --from=build /opt/monailabel/dist/amd-monailabel* /opt/monailabel/dist/
+RUN python -m pip install -v --no-cache-dir --no-deps /opt/monailabel/dist/amd-monailabel*.whl
