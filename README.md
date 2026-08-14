@@ -195,7 +195,7 @@ pip install -r ./requirements.txt -c amd-constraints.txt
 
 ```bash
 BUILD_OHIF=false python setup.py bdist_wheel --build-number $(date +'%Y%m%d%H%M')
-pip install dist/amd-monailabel-*.whl
+pip install dist/amd_monailabel-*.whl
 ```
 
 ### GPU Acceleration (Optional Dependencies)
