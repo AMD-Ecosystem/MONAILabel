@@ -12,7 +12,7 @@ limitations under the License.
 Modifications Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
 -->
 
-# MONAI Label (AMD ROCm)
+# AMD-MONAILabel (AMD ROCm)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 
 MONAI Label is an intelligent open source image labeling and learning tool that enables users to create annotated datasets and build AI annotation models for clinical evaluation. MONAI Label enables application developers to build labeling apps in a serverless way, where custom labeling apps are exposed as a service through the MONAI Label Server.
@@ -195,12 +195,12 @@ pip install -r ./requirements.txt -c amd-constraints.txt
 
 ```bash
 BUILD_OHIF=false python setup.py bdist_wheel --build-number $(date +'%Y%m%d%H%M')
-pip install dist/monailabel-*.whl
+pip install dist/amd-monailabel-*.whl
 ```
 
 ### GPU Acceleration (Optional Dependencies)
 The following optional dependencies can accelerate GPU-based transforms from MONAI on AMD hardware:
-- [HIPCIM](https://github.com/ROCm-LS/hipCIM) — ROCm-compatible replacement for cucim
+- [HIPCIM](https://github.com/AMD-Ecosystem/hipCIM) — ROCm-compatible replacement for cucim
 - [ROCm Toolkit](https://rocm.docs.amd.com/en/latest/)
 
 ### SAM-2
