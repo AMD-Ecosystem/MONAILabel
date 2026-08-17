@@ -199,7 +199,7 @@ The following optional dependencies can accelerate GPU-based transforms from MON
 
 ### SAM-2
 
-> By default, [**SAM2**](https://github.com/facebookresearch/sam2/) model is included for all the Apps when **_python >= 3.10_**
+> By default, [**SAM2**](https://github.com/facebookresearch/sam2/) model is included for all the Apps when **_python >= 3.12_**
 >  - **sam_2d**: for any organ or tissue and others over a given slice/2D image.
 >  - **sam_3d**: to support SAM2 propagation over multiple slices (Radiology/MONAI-Bundle).
 
@@ -220,11 +220,11 @@ To use [SAM-2.1](https://huggingface.co/facebook/sam2.1-hiera-large), run in dev
 <h3>Pathology</h3>
 <p>This app has example models to do both interactive and automated segmentation over pathology (WSI) images. Including nuclei multi-label segmentation for Neoplastic cells, Inflammatory, Connective/Soft tissue cells, Dead Cells, and Epithelial. The app provides interactive tools including DeepEdits for interactive nuclei segmentation.</p>
 <ul>
-  <li>Deepedit</li>
-  <li>Deepgrow</li>
-  <li>Segmentation</li>
-  <li>Spleen Segmentation</li>
-  <li>Multi-Stage Vertebra Segmentation</li>
+  <li>NuClick</li>
+  <li>Nuclei Segmentation</li>
+  <li>Nuclei Classification</li>
+  <li>HoVerNet</li>
+  <li>SAM2 (2D)</li>
 </ul>
 <h3>Video</h3>
 <p>The Endoscopy app enables users to use interactive, automated segmentation and classification models over 2D images for endoscopy usecase. Combined with CVAT, it will demonstrate the fully automated Active Learning workflow to train + fine-tune a model.</p>
