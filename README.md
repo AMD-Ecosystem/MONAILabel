@@ -15,54 +15,48 @@ Modifications Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserve
 # AMD-MONAILabel (AMD ROCm)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 
-MONAI Label is an intelligent open source image labeling and learning tool that enables users to create annotated datasets and build AI annotation models for clinical evaluation. MONAI Label enables application developers to build labeling apps in a serverless way, where custom labeling apps are exposed as a service through the MONAI Label Server.
+MONAILabel is an intelligent open source image labeling and learning tool that enables users to create annotated datasets and build AI annotation models for clinical evaluation. MONAILabel enables application developers to build labeling apps in a serverless way, where custom labeling apps are exposed as a service through the MONAILabel Server.
 
-MONAI Label is a server-client system that facilitates interactive medical image annotation by using AI. It is an
+MONAILabel is a server-client system that facilitates interactive medical image annotation by using AI. It is an
 open-source and easy-to-install ecosystem that can run locally on a machine with single or multiple GPUs. Both server
 and client work on the same/different machine. It shares the same principles
 with [MONAI](https://github.com/Project-MONAI).
-
-This fork adds **AMD ROCm** support, replacing CUDA-specific dependencies (e.g., `cucim` → `hipcim`) to enable GPU-accelerated workflows on AMD hardware.
 
 
 ### Table of Contents
 - [Overview](#overview)
   - [Highlights and Features](#highlights-and-features)
   - [Supported Matrix](#supported-matrix)
-- [Getting Started with MONAI Label](#getting-started-with-monai-label)
+- [Getting Started with MONAILabel](#getting-started-with-monai-label)
   - [Step 1. Installation](#step-1-installation)
-  - [Step 2. MONAI Label Sample Applications](#step-2-monai-label-sample-applications)
+  - [Step 2. MONAILabel Sample Applications](#step-2-monai-label-sample-applications)
   - [Step 3. Data Preparation](#step-3-data-preparation)
-  - [Step 4. Start MONAI Label Server and Start Annotating!](#step-4-start-monai-label-server-and-start-annotating)
+  - [Step 4. Start MONAILabel Server and Start Annotating!](#step-4-start-monai-label-server-and-start-annotating)
 - [OHIF Web Viewer (AMD ROCm)](#ohif-web-viewer-amd-rocm)
-- [MONAI Label Tutorials](#monai-label-tutorials)
-- [Cite MONAI Label](#cite)
+- [MONAILabel Tutorials](#monai-label-tutorials)
+- [Cite MONAILabel](#cite)
 - [Contributing](#contributing)
 - [Community](#community)
 - [Additional Resources](#additional-resources)
 
 ### Overview
-MONAI Label reduces the time and effort of annotating new datasets and enables the adaptation of AI to the task at hand by continuously learning from user interactions and data. MONAI Label allows researchers and developers to make continuous improvements to their apps by allowing them to interact with their apps at the user would. End-users (clinicians, technologists, and annotators in general) benefit from AI continuously learning and becoming better at understanding what the end-user is trying to annotate.
+MONAILabel reduces the time and effort of annotating new datasets and enables the adaptation of AI to the task at hand by continuously learning from user interactions and data. MONAILabel allows researchers and developers to make continuous improvements to their apps by allowing them to interact with their apps at the user would. End-users (clinicians, technologists, and annotators in general) benefit from AI continuously learning and becoming better at understanding what the end-user is trying to annotate.
 
-MONAI Label aims to fill the gap between developers creating new annotation applications, and the end users which want to benefit from these innovations.
+MONAILabel aims to fill the gap between developers creating new annotation applications, and the end users which want to benefit from these innovations.
 
 #### Highlights and Features
-- Framework for developing and deploying MONAI Label Apps to train and infer AI models
+- Framework for developing and deploying MONAILabel Apps to train and infer AI models
 - Compositional & portable APIs for ease of integration in existing workflows
 - Customizable labeling app design for varying user expertise
-- Annotation support via [3DSlicer](https://github.com/AMD-Ecosystem/MONAILabel/tree/main/plugins/slicer)
   & [OHIF](https://github.com/AMD-Ecosystem/MONAILabel/tree/main/plugins/ohif) for radiology
-- Annotation support via [QuPath](https://github.com/AMD-Ecosystem/MONAILabel/tree/main/plugins/qupath), [Digital Slide Archive](https://github.com/AMD-Ecosystem/MONAILabel/tree/main/plugins/dsa), and [CVAT](https://github.com/AMD-Ecosystem/MONAILabel/tree/main/plugins/cvat) for
-  pathology
-- Annotation support via [CVAT](https://github.com/AMD-Ecosystem/MONAILabel/tree/main/plugins/cvat) for Endoscopy
 - PACS connectivity via [DICOMWeb](https://www.dicomstandard.org/using/dicomweb)
 - Automated Active Learning workflow for endoscopy using [CVAT](https://github.com/AMD-Ecosystem/MONAILabel/tree/main/plugins/cvat)
 
 #### Supported Matrix
 
-MONAI Label supports many state-of-the-art(SOTA) models in Model-Zoo, and their integration with viewers and monaibundle app. Please refer to [monaibundle](https://github.com/AMD-Ecosystem/MONAILabel/tree/main/sample-apps/monaibundle) app page for supported models, including whole body segmentation, whole brain segmentation, lung nodule detection, tumor segmentation and many more.
+MONAILabel supports many state-of-the-art(SOTA) models in Model-Zoo, and their integration with viewers and monaibundle app. Please refer to [monaibundle](https://github.com/AMD-Ecosystem/MONAILabel/tree/main/sample-apps/monaibundle) app page for supported models, including whole body segmentation, whole brain segmentation, lung nodule detection, tumor segmentation and many more.
 
-In addition, you can find a table of the basic supported fields, modalities, viewers, and general data types.  However, these are only ones that we've explicitly test and that doesn't mean that your dataset or file type won't work with MONAI Label.  Try MONAI for your given task and if you're having issues, reach out through GitHub Issues.
+In addition, you can find a table of the basic supported fields, modalities, viewers, and general data types.  However, these are only ones that we've explicitly test and that doesn't mean that your dataset or file type won't work with MONAILabel.  Try MONAI for your given task and if you're having issues, reach out through GitHub Issues.
 <table>
 <tr>
   <th>Field</th>
@@ -161,12 +155,12 @@ In addition, you can find a table of the basic supported fields, modalities, vie
 <tr>
 </table>
 
-# Getting Started with MONAI Label
-### MONAI Label requires a few steps to get started:
-- Step 1: [Install MONAI Label](#step-1-installation) (see [Prerequisite](#prerequisite-install-amd-monai))
-- Step 2: [Download a MONAI Label sample app or write your own custom app](#step-2-monai-label-sample-applications)
+# Getting Started with MONAILabel
+### MONAILabel requires a few steps to get started:
+- Step 1: [Install MONAILabel](#step-1-installation) (see [Prerequisite](#prerequisite-install-amd-monai))
+- Step 2: [Download a MONAILabel sample app or write your own custom app](#step-2-monai-label-sample-applications)
 - Step 3: [Prepare your Data](#step-3-data-preparation)
-- Step 4: [Launch MONAI Label Server and start Annotating!](#step-4-start-monai-label-server-and-start-annotating)
+- Step 4: [Launch MONAILabel Server and start Annotating!](#step-4-start-monai-label-server-and-start-annotating)
 
 ## Step 1 Installation
 
@@ -205,13 +199,13 @@ The following optional dependencies can accelerate GPU-based transforms from MON
 
 ### SAM-2
 
-> By default, [**SAM2**](https://github.com/facebookresearch/sam2/) model is included for all the Apps when **_python >= 3.10_**
+> By default, [**SAM2**](https://github.com/facebookresearch/sam2/) model is included for all the Apps when **_python >= 3.12_**
 >  - **sam_2d**: for any organ or tissue and others over a given slice/2D image.
 >  - **sam_3d**: to support SAM2 propagation over multiple slices (Radiology/MONAI-Bundle).
 
 To use [SAM-2.1](https://huggingface.co/facebook/sam2.1-hiera-large), run in dev mode (git checkout) or install the latest **SAM-2** from its [github](https://github.com/facebookresearch/sam2/tree/main?tab=readme-ov-file#installation).
 
-## Step 2 MONAI Label Sample Applications
+## Step 2 MONAILabel Sample Applications
 
 <h3>Radiology</h3>
 <p>This app has example models to do both interactive and automated segmentation over radiology (3D) images. Including auto segmentation with the latest deep learning models (e.g., UNet, UNETR) for multiple abdominal organs. Interactive tools include DeepEdit and Deepgrow for actively improving trained models and deployment.</p>
@@ -226,11 +220,11 @@ To use [SAM-2.1](https://huggingface.co/facebook/sam2.1-hiera-large), run in dev
 <h3>Pathology</h3>
 <p>This app has example models to do both interactive and automated segmentation over pathology (WSI) images. Including nuclei multi-label segmentation for Neoplastic cells, Inflammatory, Connective/Soft tissue cells, Dead Cells, and Epithelial. The app provides interactive tools including DeepEdits for interactive nuclei segmentation.</p>
 <ul>
-  <li>Deepedit</li>
-  <li>Deepgrow</li>
-  <li>Segmentation</li>
-  <li>Spleen Segmentation</li>
-  <li>Multi-Stage Vertebra Segmentation</li>
+  <li>NuClick</li>
+  <li>Nuclei Segmentation</li>
+  <li>Nuclei Classification</li>
+  <li>HoVerNet</li>
+  <li>SAM2 (2D)</li>
 </ul>
 <h3>Video</h3>
 <p>The Endoscopy app enables users to use interactive, automated segmentation and classification models over 2D images for endoscopy usecase. Combined with CVAT, it will demonstrate the fully automated Active Learning workflow to train + fine-tune a model.</p>
@@ -242,13 +236,13 @@ To use [SAM-2.1](https://huggingface.co/facebook/sam2.1-hiera-large), run in dev
 <h3>Bundles</h3>
 <p>The Bundle app enables users with customized models for inference, training or pre and post processing any target anatomies. The specification for MONAILabel integration of the Bundle app links archived Model-Zoo for customized labeling (e.g., the third-party transformer model for labeling renal cortex, medulla, and pelvicalyceal system. Interactive tools such as DeepEdits).</p>
 
-For a full list of supported bundles, see the <a href="https://github.com/AMD-Ecosystem/MONAILabel/tree/main/sample-apps/monaibundle">MONAI Label Bundles README</a>.
+For a full list of supported bundles, see the <a href="https://github.com/AMD-Ecosystem/MONAILabel/tree/main/sample-apps/monaibundle">MONAILabel Bundles README</a>.
 
 ## Step 3 Data Preparation
 For data preparation, you have two options, you can use a local data store or any image archive tool that supports DICOMWeb.
 
 #### Local Datastore for the Radiology App on single modality images
-For a Datastore in a local file archive, there is a set folder structure that MONAI Label uses. Place your image data in a folder and if you have any segmentation files, create and place them in a subfolder called `labels/final`. You can see an example below:
+For a Datastore in a local file archive, there is a set folder structure that MONAILabel uses. Place your image data in a folder and if you have any segmentation files, create and place them in a subfolder called `labels/final`. You can see an example below:
 ```
 dataset
 │-- spleen_10.nii.gz
@@ -264,15 +258,15 @@ dataset
 If you don't have labels, just place the images/volumes in the dataset folder.
 
 #### DICOMWeb Support
-If the viewer you're using supports DICOMweb standard, you can use that instead of a local datastore to serve images to MONAI Label. When starting the MONAI Label server, we need to specify the URL of the DICOMweb service in the studies argument (and, optionally, the username and password for DICOM servers that require them). You can see an example of starting the MONAI Label server with a DICOMweb URL below:
+If the viewer you're using supports DICOMweb standard, you can use that instead of a local datastore to serve images to MONAILabel. When starting the MONAILabel server, we need to specify the URL of the DICOMweb service in the studies argument (and, optionally, the username and password for DICOM servers that require them). You can see an example of starting the MONAILabel server with a DICOMweb URL below:
 
 
 ```
 monailabel start_server --app apps/radiology --studies http://127.0.0.1:8042/dicom-web --conf models segmentation
 ```
 
-## Step 4 Start MONAI Label Server and Start Annotating
-You're now ready to start using MONAI Label.  Once you've configured your viewer, app, and datastore, you can launch the MONAI Label server with the relevant parameters. For simplicity, you can see an example where we download a Radiology sample app and dataset, then start the MONAI Label server below:
+## Step 4 Start MONAILabel Server and Start Annotating
+You're now ready to start using MONAILabel.  Once you've configured your viewer, app, and datastore, you can launch the MONAILabel server with the relevant parameters. For simplicity, you can see an example where we download a Radiology sample app and dataset, then start the MONAILabel server below:
 
 ```
 monailabel apps --download --name radiology --output apps
@@ -282,9 +276,9 @@ monailabel start_server --app apps/radiology --studies datasets/Task09_Spleen/im
 ## OHIF Web Viewer (AMD ROCm)
 
 The OHIF Viewer is built into the AMD ROCm Docker image (`BUILD_OHIF=true`) and is
-served directly by the MONAI Label server at the `/ohif/` path. OHIF reads studies
+served directly by the MONAILabel server at the `/ohif/` path. OHIF reads studies
 from a DICOMweb data source, so the flow is: run an Orthanc DICOMweb server, load
-DICOM studies into it, then start the MONAI Label server pointed at Orthanc.
+DICOM studies into it, then start the MONAILabel server pointed at Orthanc.
 
 The steps below were validated end-to-end on an AMD MI300X node using the
 `amd-monailabel:latest` image built from the [Dockerfile](Dockerfile).
@@ -329,7 +323,7 @@ find ./spleen_dicom -name '*.dcm' -exec \
 curl -s http://127.0.0.1:8042/dicom-web/studies | head
 ```
 
-### 3. Start the MONAI Label server (serves OHIF)
+### 3. Start the MONAILabel server (serves OHIF)
 
 Run the server from the ROCm image with the GPU attached and `--studies` pointing
 at Orthanc's DICOMweb endpoint:
@@ -364,7 +358,7 @@ ssh -L 8000:127.0.0.1:8000 -J <login-host> <user>@<gpu-node>
 Then browse to **http://localhost:8000/ohif/** (not `/`, which serves the Swagger
 API docs). Use an **incognito window** — OHIF's service worker caches the old
 bundle, so a normal refresh is often not enough. The AI models appear in the
-right-hand **MONAI Label** panel.
+right-hand **MONAILabel** panel.
 
 ### Known limitation (this release)
 
@@ -373,11 +367,11 @@ Manual **annotation is not available** in this build: the manual-markup toolbar
 can blank the viewer. This is a front-end OHIF-plugin version-drift issue (the
 `monai-label` extension targets a newer OHIF than the pinned build); the MONAI
 Label server itself is unaffected. Auto-segmentation and the model actions in the
-MONAI Label side panel work as expected.
+MONAILabel side panel work as expected.
 
 ## Cite
 
-If you are using MONAI Label in your research, please use the following citation:
+If you are using MONAILabel in your research, please use the following citation:
 
 ```bash
 @article{DiazPinto2022monailabel,
@@ -385,7 +379,7 @@ If you are using MONAI Label in your research, please use the following citation
             Nath, Vishwesh and P{\'e}rez-Garc{\'\i}a, Fernando and Mehta, Pritesh and
             Li, Wenqi and Roth, Holger R. and Vercauteren, Tom and Xu, Daguang and
             Dogra, Prerna and Ourselin, Sebastien and Feng, Andrew and Cardoso, M. Jorge},
-    title = {{MONAI Label: A framework for AI-assisted Interactive Labeling of 3D Medical Images}},
+    title = {{MONAILabel: A framework for AI-assisted Interactive Labeling of 3D Medical Images}},
   journal = {arXiv e-prints},
      year = 2022,
      url  = {https://arxiv.org/pdf/2203.12362.pdf}
@@ -401,7 +395,7 @@ If you are using MONAI Label in your research, please use the following citation
 }
  ```
 
-Optional Citation: if you are using active learning functionality from MONAI Label, please support us:
+Optional Citation: if you are using active learning functionality from MONAILabel, please support us:
 
 ```bash
 @article{nath2020diminishing,
@@ -418,12 +412,12 @@ Optional Citation: if you are using active learning functionality from MONAI Lab
 
 ## Contributing
 
-For guidance on making a contribution to MONAI Label, see
+For guidance on making a contribution to MONAILabel, see
 the [contributing guidelines](https://github.com/AMD-Ecosystem/MONAILabel/blob/main/CONTRIBUTING.md).
 
 
 Ask and answer questions over
-on [MONAI Label's GitHub Discussions tab](https://github.com/AMD-Ecosystem/MONAILabel/discussions).
+on [MONAILabel's GitHub Discussions tab](https://github.com/AMD-Ecosystem/MONAILabel/discussions).
 
 ## Additional Resources
 
