@@ -10,20 +10,13 @@ Installing MONAILabel on ROCm
 
 MONAILabel on ROCm can be installed using :ref:`AMD PyPI and upstream PyPI <install-package>` or it can be :ref:`built from source <source-build>`.
 
-System requirements
-===================
+System requirements:
 
 +--------------+----------------+----------------+----------------------------------+
 | ROCm version | Ubuntu version | Python version | AMD Instinct GPU (tested)        |
 +==============+================+================+==================================+
 | 10.0         | 24.04          | 3.12           | MI300X, MI325X, MI350X, MI355X   |
 +--------------+----------------+----------------+----------------------------------+
-
-.. note::
-
-   Ubuntu 24.04 is the tested reference operating system.
-   The install requires ``amd-monai`` 1.6.0 and PyTorch ``2.13.0+rocm7.1`` or a compatible ROCm build.
-   For other validated combinations, see :doc:`Compatibility matrix <../reference/compatibility-matrix>`.
 
 Setting up the environment
 ----------------------------
@@ -82,7 +75,7 @@ Build MONAILabel from source if you intend to develop for the library.
    .. code:: shell
 
       BUILD_OHIF=false python setup.py bdist_wheel --build-number $(date +'%Y%m%d%H%M')
-      pip install dist/monailabel-*.whl
+      pip install dist/amd_monailabel-*.whl
 
 3. Verify the installation.
 
