@@ -15,7 +15,7 @@ System requirements:
 +--------------+----------------+----------------+----------------------------------+
 | ROCm version | Ubuntu version | Python version | AMD Instinct GPU (tested)        |
 +==============+================+================+==================================+
-| 10.0         | 24.04          | 3.12           | MI300X, MI325X, MI350X, MI355X   |
+| 10.0         | 24.04          | 3.12           | MI300X, MI325X, MI355X           |
 +--------------+----------------+----------------+----------------------------------+
 
 Setting up the environment
@@ -88,57 +88,45 @@ Build MONAILabel from source if you intend to develop for the library.
 Installing MONAILabel using AMD PyPI
 ======================================
 
-If you don't intend to develop for the library, install the ROCm-validated
-``amd-monai`` dependency from `AMD PyPI <https://pypi.amd.com/simple/>`_, then
-install ``monailabel`` from upstream PyPI. pip uses the already-installed
-``amd-monai`` package instead of pulling the standard ``monai`` package.
+If you don't intend to develop for the library, install MONAILabel using the ``amd-monailabel`` package.
 
-Finish the environment setup before you install from PyPI.
-
-1. Install the ROCm-validated MONAI build from AMD PyPI.
+1. Install the ROCm-validated MONAI build, ``amd-monai``, from AMD PyPI.
 
    .. code:: shell
 
       pip install "amd-monai==1.6.0" \
           --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
-2. Install PyTorch for ROCm before any other package.
-   Finish this install before the remaining packages.
-   Later resolution might otherwise pull in a CUDA build.
+2. Install PyTorch for ROCm.
 
    .. code:: shell
 
       pip install --no-cache-dir torch torchvision torchaudio \
           --index-url https://download.pytorch.org/whl/rocm7.1
 
-3. Install ``monailabel`` without its dependencies.
-   ``--no-deps`` stops pip from replacing the ROCm build of PyTorch with a CUDA-linked build.
-   That replacement can happen while pip resolves the transitive requirements of ``monailabel``.
+3. Install ``amd-monailabel`` without its dependencies.
 
    .. code:: shell
 
-      pip install --no-cache-dir --no-deps monailabel
+      pip install --no-cache-dir --no-deps amd-monailabel --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
 4. Install SAM-2, reusing the ROCm build of PyTorch already installed.
-   ``--no-build-isolation`` stops pip from creating an isolated build environment.
-   An isolated environment might independently pull and compile against a CUDA build of PyTorch.
 
    .. code:: shell
 
       pip install --no-cache-dir --no-build-isolation "sam2>=0.4.1"
 
-5. Resolve the remaining ``monailabel`` dependencies.
-   ``--upgrade-strategy only-if-needed`` satisfies missing dependencies without upgrading the ROCm build of PyTorch installed in step 2.
+5. Resolve the remaining ``amd-monailabel`` dependencies.
 
    .. code:: shell
 
-      pip install --no-cache-dir --upgrade-strategy only-if-needed monailabel
+   pip install --no-cache-dir --upgrade-strategy only-if-needed amd-monailabel -extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
 6. Verify the installation.
 
    .. code:: shell
 
-      pip show -v monailabel
+      pip show amd-monailabel
 
 Getting started
 =================
