@@ -23,7 +23,4 @@ subtrees:
     title: Release notes
 - caption: About
   entries:
-  - file: reference/contributing
-    title: Contributing
   - file: license
-  

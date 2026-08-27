@@ -34,6 +34,6 @@ Install MONAILabel on ROCm, then review the overview, compatibility matrix, and 
     - :ref:`monailabel-compatibility`
     - :doc:`Release notes <reference/release-notes>`
 
-To contribute to MONAILabel on ROCm, see :doc:`Contributing <reference/contributing>`.
+To contribute to MONAILabel on ROCm, see `Contributing to MONAILabel <https://github.com/AMD-Ecosystem/MONAILabel/blob/amd-integration/CONTRIBUTING.md>`_.
 
 Licensing information is on the :doc:`Licensing <license>` page.
