@@ -161,7 +161,7 @@ In addition, you can find a table of the basic supported fields, modalities, vie
 
 # Getting Started with MONAILabel
 ### MONAILabel requires a few steps to get started:
-- Step 1: [Install MONAILabel](#step-1-installation) (see [Prerequisite](#prerequisite-install-amd-monai))
+- Step 1: [Install MONAILabel](#step-1-installation) 
 - Step 2: [Download a MONAILabel sample app or write your own custom app](#step-2-monai-label-sample-applications)
 - Step 3: [Prepare your Data](#step-3-data-preparation)
 - Step 4: [Launch MONAILabel Server and start Annotating!](#step-4-start-monai-label-server-and-start-annotating)
