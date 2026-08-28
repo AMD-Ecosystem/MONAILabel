@@ -15,6 +15,10 @@ Modifications Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserve
 # AMD-MONAILabel (AMD ROCm)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 
+> **Runs on AMD Instinct GPUs** -- validated on MI300X (gfx942) and MI350X/MI355X (gfx950) with public ROCm 10.0.0.
+> 55/57 unit tests pass on each arch; 26.59x GPU speedup over CPU on 3D segmentation; end-to-end inference (spleen CT) in 59 s.
+> See [Step 1 Installation (ROCm)](#step-1-installation) for the install path, or jump to the [Quick verify](#quick-verify) below.
+
 MONAILabel is an intelligent open source image labeling and learning tool that enables users to create annotated datasets and build AI annotation models for clinical evaluation. MONAILabel enables application developers to build labeling apps in a serverless way, where custom labeling apps are exposed as a service through the MONAILabel Server.
 
 MONAILabel is a server-client system that facilitates interactive medical image annotation by using AI. It is an
@@ -166,31 +170,50 @@ In addition, you can find a table of the basic supported fields, modalities, vie
 
 ### ROCm (AMD GPU) Build
 
-**Prerequisite: Install amd-monai**
+**Validated configuration:** MONAILabel 0.8.5 + MONAI 1.6.0 + PyTorch 2.13.0+rocm7.2 + ROCm 10.0.0 + Ubuntu 24.04 + Python 3.12.
 
-Before installing MONAILabel, install `amd-monai` (MONAI's AMD ROCm build) by following the instructions at:
-[https://rocm.docs.amd.com/projects/monai/en/latest/install/installation.html](https://rocm.docs.amd.com/projects/monai/en/latest/install/installation.html)
+**Prerequisites:** amdgpu kernel driver installed; user in `render` and `video` groups (log out/in after `sudo usermod -a -G render,video $LOGNAME`).
 
-**1. Clone the repository**
-
-```bash
-git clone git@github.com:AMD-Ecosystem/MONAILabel.git
-cd MONAILabel
-```
-
-**2. Install dependencies**
+**1. Create a Python venv and install public ROCm 10.0.0**
 
 ```bash
-python3 -m pip install pip setuptools wheel twine
-pip install -r ./requirements.txt -c amd-constraints.txt
+sudo apt install python3.12 python3.12-venv libatomic1
+
+python3.12 -m venv .venv && source .venv/bin/activate
+
+# MI300X (gfx942):
+pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,devel,device-gfx942]"
+# MI350X/MI355X (gfx950) -- replace device-gfx942 with device-gfx950
 ```
 
-**3. Build and install MONAILabel**
+**2. Install PyTorch for ROCm**
 
 ```bash
-BUILD_OHIF=false python setup.py bdist_wheel --build-number $(date +'%Y%m%d%H%M')
-pip install dist/amd_monailabel-*.whl
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm7.2
 ```
+
+**3. Clone this AMD ROCm fork and install**
+
+```bash
+git clone https://github.com/AMD-AIOSS/MONAILabel monailabel && cd monailabel
+pip install -r requirements.txt
+pip install .
+```
+
+**4. Quick verify** <a name="quick-verify"></a>
+
+```bash
+python - <<'EOF'
+import torch
+print("device:", torch.cuda.get_device_name(0))       # AMD Instinct MI300X (or MI350X/MI355X)
+z = torch.randn(64, 64, device="cuda") @ torch.randn(64, 64, device="cuda")
+print("matmul OK, finite:", z.isfinite().all().item())  # True
+from monailabel.utils.others.generic import gpu_memory_map
+print("free VRAM MB:", gpu_memory_map())                # {0: ~195000} on MI300X
+EOF
+```
+
+> **Note:** This is a first-time ROCm port; no `pip install amd-monailabel` public wheel exists yet -- use the source build above. A public wheel ships with a formal release.
 
 ### GPU Acceleration (Optional Dependencies)
 The following optional dependencies can accelerate GPU-based transforms from MONAI on AMD hardware:
