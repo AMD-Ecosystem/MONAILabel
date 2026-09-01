@@ -18,6 +18,7 @@ flavor options: rocm, rocm-docs-home, rocm-blogs, rocm-ds, instinct, ai-develope
 # https or git@host:org/repo remote, which SSH host aliases don't match.
 html_theme = "rocm_docs_theme"
 html_theme_options = {"flavor": "rocm-ls"}
+repository_url = "https://github.com/AMD-AIOSS/MONAILabel"
 
 '''
 docs_header_version is used to manually configure the version in the header. If
