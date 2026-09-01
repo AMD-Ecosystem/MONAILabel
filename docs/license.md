@@ -15,7 +15,7 @@ MONAILabel is licensed under the Apache License, Version 2.0.
 
 ## AMD ROCm port
 
-The AMD port is hosted at [AMD-Ecosystem/MONAILabel](https://github.com/AMD-Ecosystem/MONAILabel) and preserves all upstream copyright headers. AMD-specific modifications carry their own AMD license headers.
+The AMD port is located in [AMD-Ecosystem/MONAILabel](https://github.com/AMD-Ecosystem/MONAILabel) and preserves all upstream copyright headers. AMD-specific modifications carry their own AMD license headers.
 
 ```text
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,4 +31,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-For AMD-Ecosystem license terms more broadly, see the [AMD-Ecosystem License page](https://rocm.docs.amd.com/projects/rocm-ls/en/latest/about/license.html).
+For AMD-Ecosystem license terms, see the [AMD-Ecosystem License page](https://rocm.docs.amd.com/projects/rocm-ls/en/latest/about/license.html).

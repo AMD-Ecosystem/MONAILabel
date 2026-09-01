@@ -15,7 +15,7 @@ MONAILabel on ROCm documentation
 It provides a server for AI-assisted medical image annotation.
 It connects 3D Slicer, OHIF, and QuPath clients to MONAI-powered deep learning models.
 Radiologists and researchers can build labeled datasets interactively through active-learning workflows.
-For more information, see :doc:`What is MONAILabel on ROCm?<what-is-monailabel>`
+For more information, see :doc:`What is MONAILabel on ROCm? <what-is-monailabel>`.
 
 The MONAILabel on ROCm project is located in `AMD-Ecosystem/MONAILabel <https://github.com/AMD-Ecosystem/MONAILabel>`_.
 
@@ -30,10 +30,9 @@ Install MONAILabel on ROCm, then review the overview, compatibility matrix, and 
 
   .. grid-item-card:: Reference
 
-    - :doc:`Overview <reference/overview>`
-    - :ref:`monailabel-compatibility`
     - :doc:`Release notes <reference/release-notes>`
+    - :doc:`Overview <reference/overview>`
 
 To contribute to MONAILabel on ROCm, see `Contributing to MONAILabel <https://github.com/AMD-Ecosystem/MONAILabel/blob/amd-integration/CONTRIBUTING.md>`_.
 
-Licensing information is on the :doc:`Licensing <license>` page.
+See :doc:`Licensing <license>` for licensing information.

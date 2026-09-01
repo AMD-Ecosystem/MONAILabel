@@ -14,13 +14,10 @@ html_theme is usually unchanged (rocm_docs_theme).
 flavor defines the site header display, select the flavor for the corresponding portals
 flavor options: rocm, rocm-docs-home, rocm-blogs, rocm-ds, instinct, ai-developer-hub, local, generic
 '''
-html_theme = "rocm_docs_theme"
 # repository_url is set explicitly because the theme can only derive it from an
 # https or git@host:org/repo remote, which SSH host aliases don't match.
-html_theme_options = {
-    "flavor": "rocm-ls",
-    "repository_url": "https://github.com/AMD-Ecosystem/MONAILabel",
-}
+html_theme = "rocm_docs_theme"
+html_theme_options = {"flavor": "rocm-ls"}
 
 '''
 docs_header_version is used to manually configure the version in the header. If
@@ -57,3 +54,4 @@ extensions = [
 html_title = f"{project} documentation"
 
 external_projects_current_project = "MONAILabel on ROCm"
+external_projects_remote_repository = ""

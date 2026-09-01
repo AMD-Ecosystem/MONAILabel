@@ -1,3 +1,6 @@
+.. SPDX-FileCopyrightText: Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+.. SPDX-License-Identifier: Apache-2.0
+
 .. meta::
   :description: What MONAILabel on ROCm is and what the AMD port changed
   :keywords: MONAILabel, MONAILabel on ROCm, PyTorch-ROCm, rocm-smi, AMD
@@ -18,7 +21,16 @@ All GPU compute runs through PyTorch-ROCm.
 ``torch.cuda.*`` APIs map to HIP on AMD hardware.
 There are no new GPU kernels and no change to the public Python API.
 
-The AMD ROCm port makes the following changes to upstream MONAILabel:
+ROCm ships a PyTorch build where HIP presents itself as CUDA through the ``torch.cuda`` namespace.
+MONAILabel uses ``torch.cuda.is_available()``, ``tensor.cuda()``, and ``model.to("cuda")``.
+Those calls work on AMD hardware without application changes.
+AMD systems query VRAM with ``rocm-smi`` instead of ``nvidia-smi``.
+
+The port is validated on AMD Instinct MI300X, MI325X, and MI355X.
+It is compatible with ``amd-monai`` 1.6.0, Python 3.12, and PyTorch for ROCm 10.0.
+Validated GPUs and software versions are on the :doc:`Compatibility matrix <compatibility-matrix>`.
+
+The AMD ROCm port makes these changes to upstream MONAILabel.
 
 .. list-table::
   :header-rows: 1
@@ -32,5 +44,3 @@ The AMD ROCm port makes the following changes to upstream MONAILabel:
     - The ``/gpu`` admin endpoint dispatches to ``nvidia-smi`` on NVIDIA systems or ``rocm-smi`` on AMD systems, whichever is present.
   * - ``Dockerfile``
     - Documents an AMD ROCm 10.0 base image and the AMD PyPI wheel index as an alternative to the default CUDA-based installation.
-
-Validated GPUs and software versions are on the :doc:`Compatibility matrix <compatibility-matrix>`.

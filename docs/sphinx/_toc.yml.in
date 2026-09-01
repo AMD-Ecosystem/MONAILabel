@@ -15,12 +15,10 @@ subtrees:
     title: Installation
 - caption: Reference
   entries:
-  - file: reference/overview
-    title: Overview
-  - file: reference/compatibility-matrix
-    title: Compatibility matrix
   - file: reference/release-notes
     title: Release notes
+  - file: reference/overview
+    title: Overview
 - caption: About
   entries:
   - file: license

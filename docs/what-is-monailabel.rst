@@ -17,10 +17,6 @@ It connects 3D Slicer, OHIF, and QuPath clients to MONAI-powered deep learning m
 Radiologists and researchers can build labeled datasets interactively through active-learning workflows.
 
 MONAILabel on ROCm is the AMD ROCm-enabled release of MONAILabel validated on AMD GPUs.
-It brings the MONAILabel active-learning workflow to AMD GPUs through PyTorch-ROCm.
-It includes interactive segmentation, auto-segmentation, and model fine-tuning.
+It brings interactive segmentation, auto-segmentation, and model fine-tuning to AMD GPUs through PyTorch-ROCm.
 The public Python API is unchanged.
 See :doc:`Overview <reference/overview>` for the AMD-specific code changes.
-
-MONAILabel on ROCm includes active-learning annotation workflows on AMD GPUs.
-See :doc:`Compatibility matrix <reference/compatibility-matrix>` for validated versions.
