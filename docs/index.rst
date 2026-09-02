@@ -11,28 +11,29 @@
 MONAILabel on ROCm documentation
 *******************************************
 
-`MONAILabel <https://github.com/Project-MONAI/MONAILabel>`_ is an open-source framework licensed under Apache 2.0.
-It provides a server for AI-assisted medical image annotation.
-It connects 3D Slicer, OHIF, and QuPath clients to MONAI-powered deep learning models.
-Radiologists and researchers can build labeled datasets interactively through active-learning workflows.
-For more information, see :doc:`What is MONAILabel on ROCm?<what-is-monailabel>`
+`MONAILabel <https://github.com/Project-MONAI/MONAILabel>`_ is an open-source framework that provides a server for AI-assisted medical image annotation.
+It connects 3D Slicer, OHIF, and QuPath clients to `MONAI <https://project-monai.github.io/>`_-powered deep learning models, providing a means for radiologists and researchers to build labeled datasets interactively through active-learning workflows.
 
-The MONAILabel on ROCm project is located in `AMD-Ecosystem/MONAILabel <https://github.com/AMD-Ecosystem/MONAILabel>`_.
+MONAILabel on ROCm is the AMD ROCm-enabled release of MONAILabel validated on AMD GPUs. It brings interactive segmentation, auto-segmentation, and model fine-tuning to AMD GPUs through PyTorch-ROCm.
 
-Install MONAILabel on ROCm, then review the overview, compatibility matrix, and release notes.
+The code is open and hosted at `<https://github.com/AMD-Ecosystem/MONAILabel>`_.
 
 .. grid:: 2
   :gutter: 3
 
   .. grid-item-card:: Install
 
-    - :ref:`installing-monailabel`
+    * :ref:`installing-monailabel`
 
   .. grid-item-card:: Reference
 
-    - :doc:`Release notes <reference/release-notes>`
-    - :doc:`Overview <reference/overview>`
+    * :doc:`Overview <reference/overview>`
 
-To contribute to MONAILabel on ROCm, see `Contributing to MONAILabel <https://github.com/AMD-Ecosystem/MONAILabel/blob/amd-integration/CONTRIBUTING.md>`_.
+  .. grid-item-card:: Related content
 
-See :doc:`Licensing <license>` for licensing information.
+    * `MONAILabel blog <https://advanced-micro-devices-rocm-blogs--281.com.readthedocs.build/projects/preview/en/281/>`_
+
+To contribute to MONAILabel on ROCm, see
+`Contributing to MONAILabel <https://github.com/AMD-Ecosystem/MONAILabel/blob/amd-integration/CONTRIBUTING.md>`_.
+
+Licensing information is on the :doc:`Licensing <license>` page.

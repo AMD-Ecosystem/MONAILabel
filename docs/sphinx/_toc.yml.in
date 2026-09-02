@@ -6,19 +6,18 @@ defaults:
   numbered: False
 root: index
 subtrees:
-- entries:
-  - file: what-is-monailabel
-    title: What is MONAILabel on ROCm
 - caption: Install
   entries:
   - file: install/installation
     title: Installation
 - caption: Reference
   entries:
-  - file: reference/release-notes
-    title: Release notes
   - file: reference/overview
     title: Overview
+- caption: Related content
+  entries:
+  - url: https://rocm.blogs.amd.com/software-tools-optimization/monailabel-intro/README.html
+    title: MONAILabel blog
 - caption: About
   entries:
   - file: license

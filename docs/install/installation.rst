@@ -23,7 +23,7 @@ These combinations are the install baseline.
     - Ubuntu version
     - Python version
     - AMD Instinct GPU
-  * - 10.0
+  * - 10.0.0
     - 24.04
     - 3.12
     - MI300X, MI325X, MI355X

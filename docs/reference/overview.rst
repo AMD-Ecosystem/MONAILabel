@@ -27,8 +27,7 @@ Those calls work on AMD hardware without application changes.
 AMD systems query VRAM with ``rocm-smi`` instead of ``nvidia-smi``.
 
 The port is validated on AMD Instinct MI300X, MI325X, and MI355X.
-It is compatible with ``amd-monai`` 1.6.0, Python 3.12, and PyTorch for ROCm 10.0.
-Validated GPUs and software versions are on the :doc:`Compatibility matrix <compatibility-matrix>`.
+It is compatible with ``amd-monai`` 1.6.0, Python 3.12, and PyTorch for ROCm 10.0.0.
 
 The AMD ROCm port makes these changes to upstream MONAILabel.
 
@@ -43,4 +42,4 @@ The AMD ROCm port makes these changes to upstream MONAILabel.
   * - ``monailabel/endpoints/logs.py``
     - The ``/gpu`` admin endpoint dispatches to ``nvidia-smi`` on NVIDIA systems or ``rocm-smi`` on AMD systems, whichever is present.
   * - ``Dockerfile``
-    - Documents an AMD ROCm 10.0 base image and the AMD PyPI wheel index as an alternative to the default CUDA-based installation.
+    - Documents an AMD ROCm 10.0.0 base image and the AMD PyPI wheel index as an alternative to the default CUDA-based installation.
