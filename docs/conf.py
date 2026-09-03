@@ -55,4 +55,3 @@ extensions = [
 html_title = f"{project} documentation"
 
 external_projects_current_project = "MONAILabel on ROCm"
-external_projects_remote_repository = ""

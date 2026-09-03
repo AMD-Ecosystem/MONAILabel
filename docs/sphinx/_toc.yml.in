@@ -9,11 +9,6 @@ subtrees:
 - caption: Install
   entries:
   - file: install/installation
-    title: Installation
-- caption: Reference
-  entries:
-  - file: reference/overview
-    title: Overview
 - caption: Related content
   entries:
   - url: https://rocm.blogs.amd.com/software-tools-optimization/monailabel-intro/README.html
