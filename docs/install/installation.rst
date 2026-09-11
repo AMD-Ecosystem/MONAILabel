@@ -11,9 +11,13 @@
 Installing MONAILabel on ROCm
 ************************************
 
-Install MONAILabel on ROCm from :ref:`AMD PyPI <install-package>`, :ref:`from source <source-build>`, or with Docker.
+This topic discusses how to install hipCIM using the following options:
 
-These combinations are the install baseline.
+* :ref:`Recommended: AMD PyPI (for users) <install-package>`
+* :ref:`Build from source (for developers) <source-build>`
+
+System requirements
+=====================
 
 .. list-table::
   :header-rows: 1
@@ -28,75 +32,34 @@ These combinations are the install baseline.
     - 3.12
     - MI300X, MI325X, MI355X
 
-PyTorch 2.13.0+rocm7.1, or a compatible ROCm PyTorch build, is required.
-
-Setting up the environment
-============================
-
-Create a virtual environment and set ROCm environment variables before you install.
-
-1. For an isolated environment, start an Ubuntu 24.04 Docker container with the ROCm base image.
-
-   .. code:: shell
-
-      docker run --cap-add=SYS_PTRACE --ipc=host --privileged=true \
-          --shm-size=128GB --network=host --device=/dev/kfd \
-          --device=/dev/dri --group-add video -it \
-          rocm/dev-ubuntu-24.04:7.15-complete
-
-2. Create and activate a Python virtual environment.
-
-   .. code:: shell
-
-      python3 -m venv monailabel_env
-      source monailabel_env/bin/activate
-      pip install --upgrade pip
-
-3. Set the environment variables. Set ``AMDGPU_TARGETS`` to the GFX target for
-   your GPU. Use only one value. Use ``gfx942`` for MI300X and MI325X.
-   Use ``gfx950`` for MI355X.
-
-   .. code:: shell
-
-      export ROCM_HOME=/opt/rocm
-      export ROCM_PATH=/opt/rocm
-      export HIP_PATH=/opt/rocm
-      export HIP_VISIBLE_DEVICES=0
-      export AMDGPU_TARGETS=gfx942
-      # export AMDGPU_TARGETS=gfx950
+PyTorch with a compatible ROCm PyTorch build is required.
 
 .. _install-package:
 
 Installing MONAILabel using AMD PyPI
 ======================================
 
-If you don't intend to develop the library, install the ``amd-monailabel`` package.
-Install the ROCm-validated ``amd-monai`` dependency from AMD PyPI first.
-Then install ``amd-monailabel``.
-Install PyTorch for ROCm before any other package that might pull a CUDA build.
+From within the Docker container where MONAI was installed, use the following commands to install MONAILabel.
 
-1. Install the ROCm-validated MONAI build, ``amd-monai``, from AMD PyPI.
+1. `Install MONAI <https://rocm.docs.amd.com/projects/monai/en/docs-26.08/install/installation.html>`_.
 
-   .. code:: shell
+   MONAI is installed within a Docker container. Run the next commands from within the same Docker container.
 
-      pip install "amd-monai==1.6.0" \
-          --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
-
-2. Install PyTorch for ROCm.
+2. Set the environment variables.
 
    .. code:: shell
 
-      pip install --no-cache-dir torch torchvision torchaudio \
-          --index-url https://download.pytorch.org/whl/rocm7.1
+      export ROCM_HOME=/opt/rocm ROCM_PATH=/opt/rocm HIP_PATH=/opt/rocm \
+      AMDGPU_TARGETS=gfx942 HIP_VISIBLE_DEVICES=0
 
 3. Install ``amd-monailabel`` without its dependencies.
 
    .. code:: shell
 
       pip install --no-cache-dir --no-deps amd-monailabel \
-          --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
+         --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
-4. Install SAM-2, reusing the ROCm build of PyTorch already installed.
+4. Install SAM-2, reusing the ROCm bui1ld of PyTorch already installed.
 
    .. code:: shell
 
@@ -107,7 +70,7 @@ Install PyTorch for ROCm before any other package that might pull a CUDA build.
    .. code:: shell
 
       pip install --no-cache-dir --upgrade-strategy only-if-needed amd-monailabel \
-          --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
+         --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
 6. Verify the installation.
 
@@ -122,14 +85,27 @@ Building MONAILabel from source
 
 Build MONAILabel from source if you intend to develop the library.
 
-1. Download the latest version of MONAILabel from the git repository.
+From within the Docker container where MONAI was installed, use the following commands to build MONAILabel from source.
+
+1. `Install MONAI <https://rocm.docs.amd.com/projects/monai/en/docs-26.08/install/installation.html>`_.
+
+   MONAI is installed within a Docker container. Run the next commands from within the same Docker container.
+
+2. Set the environment variables.
+
+   .. code:: shell
+
+      export ROCM_HOME=/opt/rocm ROCM_PATH=/opt/rocm HIP_PATH=/opt/rocm \
+      AMDGPU_TARGETS=gfx942 HIP_VISIBLE_DEVICES=0
+
+3. Download the latest version of MONAILabel from the git repository.
 
    .. code:: shell
 
       git clone https://github.com/AMD-Ecosystem/MONAILabel.git
       cd MONAILabel
 
-2. Build a wheel and install it. The build number ties the wheel to the build
+4. Build a wheel and install it. The build number ties the wheel to the build
    date. Set ``BUILD_OHIF=false`` to skip building the bundled OHIF viewer.
 
    .. code:: shell
@@ -137,11 +113,7 @@ Build MONAILabel from source if you intend to develop the library.
       BUILD_OHIF=false python setup.py bdist_wheel --build-number $(date +'%Y%m%d%H%M')
       pip install dist/amd_monailabel-*.whl
 
-3. Verify the installation.
-
-   .. code:: shell
-
-      python -c "import monailabel, torch; print(torch.cuda.is_available())"
+.. _verify_install:
 
 Verify the installation
 =======================
@@ -152,14 +124,13 @@ active virtual environment. The commands check that the process can detect an AM
 .. code-block:: python
 
    import torch, monailabel
-
-   print(torch.cuda.is_available())
-   print(torch.cuda.get_device_name(0))
+   print(torch.cuda.is_available())       
+   print(torch.cuda.get_device_name(0))   
 
    from monailabel.utils.others.generic import gpu_memory_map
-   print(gpu_memory_map())
+   print(gpu_memory_map())  
 
-The command prints output of this form.
+The command prints returns the free VRAM in MB per device:
 
 .. code:: shell
 
