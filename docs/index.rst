@@ -53,9 +53,6 @@ The code is open and hosted at `<https://github.com/AMD-Ecosystem/MONAILabel>`_.
 
     * :ref:`installing-monailabel`
     
-  .. grid-item-card:: Related content
-
-    * `MONAILabel blog <https://advanced-micro-devices-rocm-blogs--281.com.readthedocs.build/projects/preview/en/281/>`_
 
 To contribute to MONAILabel on ROCm, see
 `Contributing to MONAILabel <https://github.com/AMD-Ecosystem/MONAILabel/blob/amd-integration/CONTRIBUTING.md>`_.
