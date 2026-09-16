@@ -11,7 +11,7 @@
 Installing MONAILabel on ROCm
 ************************************
 
-This topic discusses how to install hipCIM using the following options:
+This topic discusses how to install MONAILabel using the following options:
 
 * :ref:`Recommended: AMD PyPI (for users) <install-package>`
 * :ref:`Build from source (for developers) <source-build>`
@@ -52,6 +52,11 @@ From within the Docker container where MONAI was installed, use the following co
       export ROCM_HOME=/opt/rocm ROCM_PATH=/opt/rocm HIP_PATH=/opt/rocm \
       AMDGPU_TARGETS=gfx942 HIP_VISIBLE_DEVICES=0
 
+   .. note::
+
+      For MI300X and MI325X, set ``AMDGPU_TARGETS=gfx942``. For MI355X, set
+      ``AMDGPU_TARGETS=gfx950``.
+
 3. Install ``amd-monailabel`` without its dependencies.
 
    .. code:: shell
@@ -59,7 +64,7 @@ From within the Docker container where MONAI was installed, use the following co
       pip install --no-cache-dir --no-deps amd-monailabel \
          --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
-4. Install SAM-2, reusing the ROCm bui1ld of PyTorch already installed.
+4. Install SAM-2, reusing the ROCm build of PyTorch already installed.
 
    .. code:: shell
 
@@ -97,6 +102,11 @@ From within the Docker container where MONAI was installed, use the following co
 
       export ROCM_HOME=/opt/rocm ROCM_PATH=/opt/rocm HIP_PATH=/opt/rocm \
       AMDGPU_TARGETS=gfx942 HIP_VISIBLE_DEVICES=0
+
+   .. note::
+
+      For MI300X and MI325X, set ``AMDGPU_TARGETS=gfx942``. For MI355X, set
+      ``AMDGPU_TARGETS=gfx950``.
 
 3. Download the latest version of MONAILabel from the git repository.
 
