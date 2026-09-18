@@ -22,6 +22,3 @@ build:
    os: ubuntu-22.04
    tools:
       python: "3.10"
-   jobs:
-      pre_build:
-      - sed -e "s/{branch}/$READTHEDOCS_GIT_IDENTIFIER/g" docs/sphinx/_toc.yml.in > docs/sphinx/_toc.yml
