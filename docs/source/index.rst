@@ -89,7 +89,7 @@ Contributing
 ------------
 
 For guidance on making a contribution to MONAI, see the `contributing guidelines
-<https://github.com/Project-MONAI/MONAILabel/blob/main/CONTRIBUTING.md>`_.
+<https://github.com/Project-MONAI/MONAILabel/blob/amd-develop/CONTRIBUTING.md>`_.
 
 -----
 Links
