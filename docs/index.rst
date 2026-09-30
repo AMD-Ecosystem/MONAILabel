@@ -55,6 +55,6 @@ The code is open and hosted at `<https://github.com/AMD-Ecosystem/MONAILabel>`_.
     
 
 To contribute to MONAILabel on ROCm, see
-`Contributing to MONAILabel <https://github.com/AMD-Ecosystem/MONAILabel/blob/amd-integration/CONTRIBUTING.md>`_.
+`Contributing to MONAILabel <https://github.com/AMD-Ecosystem/MONAILabel/blob/amd-develop/CONTRIBUTING.md>`_.
 
 Licensing information is on the :doc:`Licensing <license>` page.
