@@ -12,16 +12,16 @@
 # Modifications Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
 
 # To build with a different base image
-# please run `./runtests.sh --clean && DOCKER_BUILDKIT=1 docker build -t amd-monailabel:latest .`
+# please run `./runtests.sh --clean && DOCKER_BUILDKIT=1 docker build -t monailabel:latest .`
 # to use different version of MONAI pass `--build-arg FINAL_IMAGE=...`
 #
 # AMD ROCm build (default): torch comes from the ROCm wheel index and MONAI is
-# provided by amd-monai (with amd-hipcim) from the AMD ROCm pip index. Override the ROCm base / indices
+# provided by monai (with amd-hipcim) from the AMD ROCm pip index. Override the ROCm base / indices
 # with the build-args below, e.g.:
 #   DOCKER_BUILDKIT=1 docker build \
 #     --build-arg FINAL_IMAGE=rocm/dev-ubuntu-24.04:7.2-complete \
 #     --build-arg TORCH_INDEX_URL=https://download.pytorch.org/whl/rocm7.1 \
-#     --build-arg AMDGPU_TARGETS=gfx942 -t amd-monailabel:latest .
+#     --build-arg AMDGPU_TARGETS=gfx942 -t monailabel:latest .
 ARG FINAL_IMAGE=rocm/dev-ubuntu-24.04:7.2-complete
 ARG BUILD_IMAGE=python:3.10
 ARG NODE_IMAGE=node:slim
@@ -54,9 +54,9 @@ COPY --from=ohifbuild /opt/ohifv3/release /opt/monailabel/monailabel/endpoints/s
 # then rename the wheel to a clean, stable name: monailabel-<version>-py3.whl.
 RUN BUILD_OHIF=false python setup.py bdist_wheel && \
     cd dist && \
-    orig="$(ls amd_monailabel-*.whl | head -1)" && \
-    ver="$(echo "${orig}" | sed -E 's/^amd_monailabel-([^+-]+).*/\1/')" && \
-    mv "${orig}" "amd_monailabel-${ver}-py3-none-any.whl" && \
+    orig="$(ls monailabel-*.whl | head -1)" && \
+    ver="$(echo "${orig}" | sed -E 's/^monailabel-([^+-]+).*/\1/')" && \
+    mv "${orig}" "monailabel-${ver}-py3-none-any.whl" && \
     ls -l
 
 # Phase3: Build Final Docker (AMD ROCm)
@@ -85,11 +85,11 @@ RUN python -m pip install --no-cache-dir --upgrade "setuptools>=61"
 # torch from the ROCm wheel index 
 RUN python -m pip install --no-cache-dir torch torchvision torchaudio --index-url ${TORCH_INDEX_URL}
 
-# amd-hipcim + amd-monai (MONAI's ROCm build) from the AMD ROCm pip index
+# amd-hipcim + monai (MONAI's ROCm build) from the AMD ROCm pip index
 RUN ROCM_VERSION="$(cat /opt/rocm/.info/version)" && \
     AMD_INDEX="https://pypi.amd.com/rocm-${ROCM_VERSION}/simple" && \
     python -m pip install --no-cache-dir amd-hipcim --extra-index-url="${AMD_INDEX}/" && \
-    python -m pip install --no-cache-dir amd-monai --extra-index-url="${AMD_INDEX}"
+    python -m pip install --no-cache-dir monai --extra-index-url="${AMD_INDEX}"
 
 RUN python -m pip install --no-cache-dir "setuptools-scm<8" "setuptools>=61" wheel && \
     python -m pip install --no-cache-dir --no-build-isolation girder-client==3.2.3
@@ -103,5 +103,5 @@ RUN SAM2_URL="$(grep -iE 'sam2\.git' requirements.txt | sed -E 's/^[^@]*@ *//; s
     fi
 
 # Install the MONAILabel wheel (deps already satisfied above)
-COPY --from=build /opt/monailabel/dist/amd_monailabel* /opt/monailabel/dist/
-RUN python -m pip install -v --no-cache-dir --no-deps /opt/monailabel/dist/amd_monailabel*.whl
+COPY --from=build /opt/monailabel/dist/monailabel* /opt/monailabel/dist/
+RUN python -m pip install -v --no-cache-dir --no-deps /opt/monailabel/dist/monailabel*.whl
