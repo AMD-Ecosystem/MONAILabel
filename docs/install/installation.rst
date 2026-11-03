@@ -57,11 +57,11 @@ From within the Docker container where MONAI was installed, use the following co
       For MI300X and MI325X, set ``AMDGPU_TARGETS=gfx942``. For MI355X, set
       ``AMDGPU_TARGETS=gfx950``.
 
-3. Install ``amd-monailabel`` without its dependencies.
+3. Install ``monailabel`` without its dependencies.
 
    .. code:: shell
 
-      pip install --no-cache-dir --no-deps amd-monailabel \
+      pip install --no-cache-dir --no-deps monailabel \
          --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
 4. Install SAM-2, reusing the ROCm build of PyTorch already installed.
@@ -70,18 +70,18 @@ From within the Docker container where MONAI was installed, use the following co
 
       pip install --no-cache-dir --no-build-isolation "sam2>=0.4.1"
 
-5. Resolve the remaining ``amd-monailabel`` dependencies.
+5. Resolve the remaining ``monailabel`` dependencies.
 
    .. code:: shell
 
-      pip install --no-cache-dir --upgrade-strategy only-if-needed amd-monailabel \
+      pip install --no-cache-dir --upgrade-strategy only-if-needed monailabel \
          --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
 6. Verify the installation.
 
    .. code:: shell
 
-      pip show amd-monailabel
+      pip show monailabel
 
 .. _source-build:
 
@@ -121,7 +121,7 @@ From within the Docker container where MONAI was installed, use the following co
    .. code:: shell
 
       BUILD_OHIF=false python setup.py bdist_wheel --build-number $(date +'%Y%m%d%H%M')
-      pip install dist/amd_monailabel-*.whl
+      pip install dist/monailabel-*.whl
 
 .. _verify_install:
 

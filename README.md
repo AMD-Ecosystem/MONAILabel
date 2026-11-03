@@ -16,7 +16,7 @@ Modifications Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserve
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 
 > **Runs on AMD Instinct GPUs** — the AMD ROCm port is validated on AMD Instinct MI300X, MI325X, and MI355X,
-> and is compatible with `amd-monai` 1.6.0, Python 3.12, and PyTorch for ROCm 10.0.0.
+> and is compatible with `monai` 1.6.0, Python 3.12, and PyTorch for ROCm 10.0.0.
 > See [Step 1 Installation (ROCm)](#step-1-installation) for the install path, or jump to the
 > [Verify the installation](#quick-verify) snippet.
 
@@ -193,19 +193,19 @@ AMDGPU_TARGETS=gfx942 HIP_VISIBLE_DEVICES=0
 **Recommended: install from AMD PyPI (for users)**
 
 ```bash
-# 1. Install amd-monailabel without its dependencies
-pip install --no-cache-dir --no-deps amd-monailabel \
+# 1. Install monailabel without its dependencies
+pip install --no-cache-dir --no-deps monailabel \
    --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
 # 2. Install SAM-2, reusing the ROCm build of PyTorch already installed
 pip install --no-cache-dir --no-build-isolation "sam2>=0.4.1"
 
-# 3. Resolve the remaining amd-monailabel dependencies
-pip install --no-cache-dir --upgrade-strategy only-if-needed amd-monailabel \
+# 3. Resolve the remaining monailabel dependencies
+pip install --no-cache-dir --upgrade-strategy only-if-needed monailabel \
    --extra-index-url=https://pypi.amd.com/rocm-10.0.0/simple/
 
 # 4. Verify the installation
-pip show amd-monailabel
+pip show monailabel
 ```
 
 **Build from source (for developers)**
@@ -217,7 +217,7 @@ cd MONAILabel
 # The build number ties the wheel to the build date.
 # Set BUILD_OHIF=false to skip building the bundled OHIF viewer.
 BUILD_OHIF=false python setup.py bdist_wheel --build-number $(date +'%Y%m%d%H%M')
-pip install dist/amd_monailabel-*.whl
+pip install dist/monailabel-*.whl
 ```
 
 **Verify the installation** <a name="quick-verify"></a>
@@ -334,7 +334,7 @@ from a DICOMweb data source, so the flow is: run an Orthanc DICOMweb server, loa
 DICOM studies into it, then start the MONAILabel server pointed at Orthanc.
 
 The steps below were validated end-to-end on an AMD MI300X node using the
-`amd-monailabel:latest` image built from the [Dockerfile](Dockerfile).
+`monailabel:latest` image built from the [Dockerfile](Dockerfile).
 
 ### 1. Start Orthanc (DICOMweb data source)
 
@@ -385,7 +385,7 @@ at Orthanc's DICOMweb endpoint:
 docker run -d --name ml_server --network host \
   --device=/dev/kfd --device=/dev/dri --group-add video \
   --ipc=host --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --shm-size=8G \
-  amd-monailabel:latest bash -lc '
+  monailabel:latest bash -lc '
     cp -r /usr/local/monailabel/sample-apps/radiology /workspace/radiology
     HIP_VISIBLE_DEVICES=0 PYTORCH_HIP_ALLOC_CONF=expandable_segments:True \
     MLFLOW_ALLOW_FILE_STORE=true \

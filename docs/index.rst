@@ -27,7 +27,7 @@ Those calls work on AMD hardware without application changes.
 AMD systems query VRAM with ``rocm-smi`` instead of ``nvidia-smi``.
 
 The port is validated on AMD Instinct MI300X, MI325X, and MI355X.
-It is compatible with ``amd-monai`` 1.6.0, Python 3.12, and PyTorch for ROCm 10.0.0.
+It is compatible with ``monai`` 1.6.0, Python 3.12, and PyTorch for ROCm 10.0.0.
 
 The AMD ROCm port makes these changes to upstream MONAILabel.
 
